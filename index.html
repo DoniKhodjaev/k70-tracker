@@ -601,7 +601,7 @@ button { cursor: pointer; }
   <div class="history" id="history"></div>
 
   <!-- Export -->
-  <button class="export-btn" id="export-btn">экспортировать данные</button>
+  <button class="export-btn" id="export-btn">скопировать данные в буфер</button>
 
   <div class="footer">offline · pwa · данные на устройстве</div>
 </div>
@@ -1030,16 +1030,26 @@ document.getElementById('toggle-history').addEventListener('click', () => {
 });
 
 // export
-document.getElementById('export-btn').addEventListener('click', () => {
+document.getElementById('export-btn').addEventListener('click', async () => {
   const data = { entries: state.entries, exported: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `k70-export-${dateKey(new Date())}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('экспортировано');
+  const json = JSON.stringify(data, null, 2);
+
+  // Современные браузеры — копируем в буфер обмена (нужно для синка с Scriptable-виджетом)
+  try {
+    await navigator.clipboard.writeText(json);
+    showToast('скопировано в буфер');
+    return;
+  } catch (e) {
+    // Fallback — скачивание файлом, если clipboard API недоступен
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `k70-export-${dateKey(new Date())}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('файл сохранён');
+  }
 });
 
 // ============ SERVICE WORKER ============
