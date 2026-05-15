@@ -52,6 +52,9 @@ html, body {
   overscroll-behavior-y: contain;
   min-height: 100vh;
   min-height: 100dvh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 body {
@@ -106,13 +109,17 @@ button { cursor: pointer; }
   background: var(--surface-1);
   border: 0.5px solid var(--border-1);
   border-radius: 2px;
+  min-width: 0;
+  overflow: hidden;
 }
 .head-stat-label {
   font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--cream-3); margin-bottom: 0.4rem;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .head-stat-value {
   font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; line-height: 1;
+  white-space: nowrap; overflow: hidden;
 }
 .head-stat-value.accent { color: var(--gold); }
 .head-stat-unit {
@@ -173,6 +180,7 @@ button { cursor: pointer; }
 /* Weight input with stepper */
 .value-row {
   display: flex; align-items: center; gap: 0.65rem;
+  min-width: 0;
 }
 .step-btn {
   width: 38px; height: 38px;
@@ -187,7 +195,9 @@ button { cursor: pointer; }
 .step-btn:active { transform: scale(0.9); background: var(--cream); color: var(--navy-deep); }
 
 .big-input {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.1rem;
   font-weight: 400;
