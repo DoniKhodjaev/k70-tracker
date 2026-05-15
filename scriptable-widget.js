@@ -159,6 +159,25 @@ function drawChart(data, width, height) {
 function createWidget(stats) {
   const w = new ListWidget();
 
+  w.url = PWA_URL;
+
+  const family = config.widgetFamily || `medium`;
+
+  // Lock Screen accessory widgets (iOS 16+) — без фона/цветов, монохром
+  if (family === `accessoryCircular`) {
+    renderAccessoryCircular(w, stats);
+    return w;
+  }
+  if (family === `accessoryRectangular`) {
+    renderAccessoryRectangular(w, stats);
+    return w;
+  }
+  if (family === `accessoryInline`) {
+    renderAccessoryInline(w, stats);
+    return w;
+  }
+
+  // Home Screen widgets — навы-крем градиент
   const grad = new LinearGradient();
   grad.locations = [0, 0.6, 1];
   grad.colors = [C.navyMid, C.navy, C.navyDark];
@@ -167,15 +186,143 @@ function createWidget(stats) {
   w.backgroundGradient = grad;
 
   w.setPadding(12, 14, 12, 14);
-  w.url = PWA_URL;
-
-  const family = config.widgetFamily || `medium`;
 
   if (family === `small`) renderSmall(w, stats);
   else if (family === `large`) renderLarge(w, stats);
   else renderMedium(w, stats);
 
   return w;
+}
+
+// =============== ACCESSORY (LOCK SCREEN) ===============
+
+function renderAccessoryCircular(w, stats) {
+  w.addAccessoryWidgetBackground = true;
+  const img = drawCircularProgress(stats);
+  const wImg = w.addImage(img);
+  wImg.applyFittingContentMode();
+  wImg.centerAlignImage();
+}
+
+function drawCircularProgress(stats) {
+  const scale = 4;
+  const size = 60 * scale;
+  const ctx = new DrawContext();
+  ctx.size = new Size(size, size);
+  ctx.opaque = false;
+  ctx.respectScreenScale = false;
+
+  const cx = size / 2;
+  const cy = size / 2;
+  const r = size / 2 - 5 * scale;
+  const lineWidth = 3.5 * scale;
+
+  const white = new Color(`#FFFFFF`, 1);
+  const whiteFaded = new Color(`#FFFFFF`, 0.3);
+
+  // background ring
+  drawArc(ctx, cx, cy, r, 0, 360, lineWidth, whiteFaded);
+
+  // progress (от старта 85 к цели 70)
+  const start = TARGETS.startWeight;
+  const target = TARGETS.weight;
+  const current = stats.weight !== null ? stats.weight : start;
+  const progress = Math.max(0, Math.min(1, (start - current) / (start - target)));
+  if (progress > 0) {
+    drawArc(ctx, cx, cy, r, -90, -90 + 360 * progress, lineWidth, white);
+  }
+
+  // вес в центре
+  const text = stats.weight !== null ? stats.weight.toFixed(1) : `—`;
+  ctx.setTextColor(white);
+  ctx.setFont(Font.semiboldSystemFont(18 * scale));
+  ctx.setTextAlignedCenter();
+  ctx.drawTextInRect(text, new Rect(0, cy - 13 * scale, size, 22 * scale));
+
+  // подпись "кг"
+  ctx.setFont(Font.regularSystemFont(7 * scale));
+  ctx.drawTextInRect(`КГ`, new Rect(0, cy + 8 * scale, size, 10 * scale));
+
+  return ctx.getImage();
+}
+
+function drawArc(ctx, cx, cy, r, startDeg, endDeg, lineWidth, color) {
+  const segments = 80;
+  const startRad = startDeg * Math.PI / 180;
+  const endRad = endDeg * Math.PI / 180;
+  const step = (endRad - startRad) / segments;
+  ctx.setStrokeColor(color);
+  ctx.setLineWidth(lineWidth);
+  for (let i = 0; i < segments; i++) {
+    const a1 = startRad + i * step;
+    const a2 = startRad + (i + 1) * step;
+    const p = new Path();
+    p.move(new Point(cx + r * Math.cos(a1), cy + r * Math.sin(a1)));
+    p.addLine(new Point(cx + r * Math.cos(a2), cy + r * Math.sin(a2)));
+    ctx.addPath(p);
+    ctx.strokePath();
+  }
+}
+
+function renderAccessoryRectangular(w, stats) {
+  w.addAccessoryWidgetBackground = true;
+
+  // верхняя строка: бренд + серия
+  const top = w.addStack();
+  top.layoutHorizontally();
+  top.centerAlignContent();
+  const brand = top.addText(`ДОРОГА К 70`);
+  brand.font = Font.regularSystemFont(9);
+  top.addSpacer();
+  const streak = top.addText(`${stats.streak} дн`);
+  streak.font = Font.semiboldSystemFont(9);
+
+  w.addSpacer(2);
+
+  // главная строка: вес + сброшено
+  const mid = w.addStack();
+  mid.layoutHorizontally();
+  mid.centerAlignContent();
+
+  const weight = mid.addText(stats.weight !== null ? stats.weight.toFixed(1) : `—`);
+  weight.font = Font.semiboldSystemFont(22);
+
+  const kg = mid.addText(` кг`);
+  kg.font = Font.regularSystemFont(10);
+
+  mid.addSpacer();
+
+  if (stats.lost > 0) {
+    const lostStack = mid.addStack();
+    lostStack.layoutVertically();
+    const lostL = lostStack.addText(`сброшено`);
+    lostL.font = Font.regularSystemFont(7);
+    const lostV = lostStack.addText(`${stats.lost.toFixed(1)} кг`);
+    lostV.font = Font.semiboldSystemFont(10);
+  }
+
+  // нижняя строка: калории и тренировка
+  const bot = w.addStack();
+  bot.layoutHorizontally();
+  bot.centerAlignContent();
+
+  const calText = bot.addText(`${Math.round(stats.todayCalories)}/${TARGETS.calories} ккал`);
+  calText.font = Font.regularSystemFont(9);
+
+  bot.addSpacer();
+
+  if (stats.todayWorkout && stats.todayWorkout !== `none`) {
+    const wtag = bot.addText(`✓ ${stats.todayWorkout}`);
+    wtag.font = Font.semiboldSystemFont(9);
+  }
+}
+
+function renderAccessoryInline(w, stats) {
+  // одна строка над часами на локскрине
+  const weight = stats.weight !== null ? stats.weight.toFixed(1) : `—`;
+  const lostStr = stats.lost > 0 ? ` ↓${stats.lost.toFixed(1)}` : String.fromCharCode();
+  const txt = w.addText(`К 70 · ${weight} кг${lostStr} · ${stats.streak} дн`);
+  txt.font = Font.regularSystemFont(12);
 }
 
 function renderSmall(w, stats) {
