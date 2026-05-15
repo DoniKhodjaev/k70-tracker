@@ -16,7 +16,7 @@
 // - В меню выбери «Импорт JSON» — данные подтянутся из буфера обмена
 // =============================================================
 
-const PWA_URL = "https://donikhodjaev.github.io/k70-tracker/";
+const PWA_URL = `https://donikhodjaev.github.io/k70-tracker/`;
 
 const TARGETS = {
   weight: 70,
@@ -26,23 +26,23 @@ const TARGETS = {
 };
 
 const C = {
-  navy: new Color("#0A1929"),
-  navyMid: new Color("#11233E"),
-  navyDark: new Color("#060F1C"),
-  cream: new Color("#F5EFE6"),
-  cream2: new Color("#B8B5AC"),
-  cream3: new Color("#8A8780"),
-  gold: new Color("#D4B886"),
+  navy: new Color(`#0A1929`),
+  navyMid: new Color(`#11233E`),
+  navyDark: new Color(`#060F1C`),
+  cream: new Color(`#F5EFE6`),
+  cream2: new Color(`#B8B5AC`),
+  cream3: new Color(`#8A8780`),
+  gold: new Color(`#D4B886`),
 };
 
 // Шрифты (Cochin — встроенный iOS serif, ближайший к Cormorant Garamond)
-const SERIF = (size) => new Font("Cochin", size);
+const SERIF = (size) => new Font(`Cochin`, size);
 const SANS = (size) => Font.lightSystemFont(size);
 const SANS_BOLD = (size) => Font.semiboldSystemFont(size);
 
 // =============== STORAGE ===============
 const fm = FileManager.local();
-const dataPath = fm.joinPath(fm.documentsDirectory(), "k70-tracker.json");
+const dataPath = fm.joinPath(fm.documentsDirectory(), `k70-tracker.json`);
 
 function loadData() {
   if (!fm.fileExists(dataPath)) return { entries: {} };
@@ -57,8 +57,8 @@ function saveData(data) {
 // =============== HELPERS ===============
 function dateKey(d) {
   const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
+  const m = String(d.getMonth() + 1).padStart(2, `0`);
+  const day = String(d.getDate()).padStart(2, `0`);
   return `${y}-${m}-${day}`;
 }
 
@@ -78,7 +78,7 @@ function calcStats(data) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     const e = data.entries[dateKey(d)];
-    if (e && (e.weight || e.calories || e.steps || (e.workout && e.workout !== "none"))) {
+    if (e && (e.weight || e.calories || e.steps || (e.workout && e.workout !== `none`))) {
       streak++;
     } else if (i > 0) break;
   }
@@ -169,10 +169,10 @@ function createWidget(stats) {
   w.setPadding(12, 14, 12, 14);
   w.url = PWA_URL;
 
-  const family = config.widgetFamily || "medium";
+  const family = config.widgetFamily || `medium`;
 
-  if (family === "small") renderSmall(w, stats);
-  else if (family === "large") renderLarge(w, stats);
+  if (family === `small`) renderSmall(w, stats);
+  else if (family === `large`) renderLarge(w, stats);
   else renderMedium(w, stats);
 
   return w;
@@ -181,7 +181,7 @@ function createWidget(stats) {
 function renderSmall(w, stats) {
   const header = w.addStack();
   header.layoutHorizontally();
-  const brand = header.addText("ДОРОГА К 70");
+  const brand = header.addText(`ДОРОГА К 70`);
   brand.font = SANS(7.5);
   brand.textColor = C.cream3;
   header.addSpacer();
@@ -191,11 +191,11 @@ function renderSmall(w, stats) {
 
   w.addSpacer(6);
 
-  const weight = w.addText(stats.weight !== null ? stats.weight.toFixed(1) : "—");
+  const weight = w.addText(stats.weight !== null ? stats.weight.toFixed(1) : `—`);
   weight.font = SERIF(38);
   weight.textColor = C.cream;
 
-  const unit = w.addText("КГ");
+  const unit = w.addText(`КГ`);
   unit.font = SANS(7);
   unit.textColor = C.cream3;
 
@@ -203,7 +203,7 @@ function renderSmall(w, stats) {
 
   const lostStack = w.addStack();
   lostStack.layoutHorizontally();
-  const lostLabel = lostStack.addText("сброшено ");
+  const lostLabel = lostStack.addText(`сброшено `);
   lostLabel.font = SANS(8);
   lostLabel.textColor = C.cream3;
   const lostValue = lostStack.addText(`${stats.lost.toFixed(1)} кг`);
@@ -215,20 +215,20 @@ function renderMedium(w, stats) {
   // Header
   const header = w.addStack();
   header.layoutHorizontally();
-  const brand = header.addText("ДОРОГА К 70");
+  const brand = header.addText(`ДОРОГА К 70`);
   brand.font = SANS(8);
   brand.textColor = C.cream3;
   header.addSpacer();
 
   const streakStack = header.addStack();
   streakStack.layoutHorizontally();
-  const sl = streakStack.addText("СЕРИЯ ");
+  const sl = streakStack.addText(`СЕРИЯ `);
   sl.font = SANS(8);
   sl.textColor = C.cream3;
   const sv = streakStack.addText(`${stats.streak}`);
   sv.font = SANS_BOLD(8);
   sv.textColor = C.cream;
-  const su = streakStack.addText(" дн");
+  const su = streakStack.addText(` дн`);
   su.font = SANS(8);
   su.textColor = C.cream3;
 
@@ -242,11 +242,11 @@ function renderMedium(w, stats) {
   const left = main.addStack();
   left.layoutVertically();
 
-  const wv = left.addText(stats.weight !== null ? stats.weight.toFixed(1) : "—");
+  const wv = left.addText(stats.weight !== null ? stats.weight.toFixed(1) : `—`);
   wv.font = SERIF(46);
   wv.textColor = C.cream;
 
-  const wu = left.addText("КГ");
+  const wu = left.addText(`КГ`);
   wu.font = SANS(7);
   wu.textColor = C.cream3;
 
@@ -254,7 +254,7 @@ function renderMedium(w, stats) {
 
   const lostS = left.addStack();
   lostS.layoutHorizontally();
-  const lostL = lostS.addText("сброшено ");
+  const lostL = lostS.addText(`сброшено `);
   lostL.font = SANS(8);
   lostL.textColor = C.cream3;
   const lostV = lostS.addText(`${stats.lost.toFixed(1)} кг`);
@@ -272,7 +272,7 @@ function renderMedium(w, stats) {
     const img = right.addImage(chartImg);
     img.imageSize = new Size(165, 55);
   } else {
-    const placeholder = right.addText("график появится после 2+ замеров");
+    const placeholder = right.addText(`график появится после 2+ замеров`);
     placeholder.font = SANS(7);
     placeholder.textColor = C.cream3;
     placeholder.lineLimit = 2;
@@ -285,7 +285,7 @@ function renderMedium(w, stats) {
   calRow.layoutHorizontally();
   calRow.centerAlignContent();
 
-  const calLabel = calRow.addText("КАЛ ");
+  const calLabel = calRow.addText(`КАЛ `);
   calLabel.font = SANS(7);
   calLabel.textColor = C.cream3;
 
@@ -299,7 +299,7 @@ function renderMedium(w, stats) {
 
   calRow.addSpacer();
 
-  if (stats.todayWorkout && stats.todayWorkout !== "none") {
+  if (stats.todayWorkout && stats.todayWorkout !== `none`) {
     const wtag = calRow.addText(`✓ ${stats.todayWorkout}`);
     wtag.font = SANS_BOLD(9);
     wtag.textColor = C.gold;
@@ -313,7 +313,7 @@ function renderLarge(w, stats) {
 
   const sep = w.addStack();
   sep.addSpacer();
-  const dash = sep.addText("───────");
+  const dash = sep.addText(`───────`);
   dash.font = SANS(6);
   dash.textColor = C.cream3;
   sep.addSpacer();
@@ -324,22 +324,22 @@ function renderLarge(w, stats) {
   const tgt = w.addStack();
   tgt.layoutHorizontally();
   tgt.centerAlignContent();
-  const tl = tgt.addText("ДО ЦЕЛИ ");
+  const tl = tgt.addText(`ДО ЦЕЛИ `);
   tl.font = SANS(8);
   tl.textColor = C.cream3;
   const remaining = stats.weight !== null
     ? Math.max(0, stats.weight - TARGETS.weight).toFixed(1)
-    : "—";
+    : `—`;
   const tv = tgt.addText(`${remaining}`);
   tv.font = SERIF(22);
   tv.textColor = C.gold;
-  const tu = tgt.addText(" кг");
+  const tu = tgt.addText(` кг`);
   tu.font = SANS(8);
   tu.textColor = C.cream3;
 
   tgt.addSpacer();
 
-  const stepsLabel = tgt.addText("ШАГИ ");
+  const stepsLabel = tgt.addText(`ШАГИ `);
   stepsLabel.font = SANS(8);
   stepsLabel.textColor = C.cream3;
   const stepsV = tgt.addText(`${Math.round(stats.todaySteps)}`);
@@ -353,56 +353,56 @@ function renderLarge(w, stats) {
 // =============== IN-APP UI ===============
 async function showMenu(data) {
   const a = new Alert();
-  a.title = "Дорога к 70";
+  a.title = `Дорога к 70`;
   a.message = `Сегодня · ${formatToday()}`;
-  a.addAction("Записать вес");
-  a.addAction("Записать калории");
-  a.addAction("Записать шаги");
-  a.addAction("Отметить тренировку");
-  a.addAction("Импорт JSON (из буфера)");
-  a.addAction("Экспорт JSON (в буфер)");
-  a.addCancelAction("Закрыть");
+  a.addAction(`Записать вес`);
+  a.addAction(`Записать калории`);
+  a.addAction(`Записать шаги`);
+  a.addAction(`Отметить тренировку`);
+  a.addAction(`Импорт JSON (из буфера)`);
+  a.addAction(`Экспорт JSON (в буфер)`);
+  a.addCancelAction(`Закрыть`);
 
   const idx = await a.present();
   const today = dateKey(new Date());
   if (!data.entries[today]) data.entries[today] = {};
 
   if (idx === 0) {
-    const v = await prompt("Вес сегодня", "85.0", data.entries[today].weight);
+    const v = await prompt(`Вес сегодня`, `85.0`, data.entries[today].weight);
     if (v !== null) {
-      if (v === "") delete data.entries[today].weight;
+      if (v === ``) delete data.entries[today].weight;
       else data.entries[today].weight = v;
       cleanupEntry(data, today);
       saveData(data);
     }
   } else if (idx === 1) {
-    const v = await prompt("Калории сегодня", "1800", data.entries[today].calories);
+    const v = await prompt(`Калории сегодня`, `1800`, data.entries[today].calories);
     if (v !== null) {
-      if (v === "") delete data.entries[today].calories;
+      if (v === ``) delete data.entries[today].calories;
       else data.entries[today].calories = v;
       cleanupEntry(data, today);
       saveData(data);
     }
   } else if (idx === 2) {
-    const v = await prompt("Шаги сегодня", "9000", data.entries[today].steps);
+    const v = await prompt(`Шаги сегодня`, `9000`, data.entries[today].steps);
     if (v !== null) {
-      if (v === "") delete data.entries[today].steps;
+      if (v === ``) delete data.entries[today].steps;
       else data.entries[today].steps = v;
       cleanupEntry(data, today);
       saveData(data);
     }
   } else if (idx === 3) {
     const wa = new Alert();
-    wa.title = "Тренировка сегодня";
-    wa.addAction("A · ноги");
-    wa.addAction("B · спина");
-    wa.addAction("C · полное");
-    wa.addAction("Удалить");
-    wa.addCancelAction("Отмена");
+    wa.title = `Тренировка сегодня`;
+    wa.addAction(`A · ноги`);
+    wa.addAction(`B · спина`);
+    wa.addAction(`C · полное`);
+    wa.addAction(`Удалить`);
+    wa.addCancelAction(`Отмена`);
     const widx = await wa.present();
-    if (widx === 0) data.entries[today].workout = "A";
-    else if (widx === 1) data.entries[today].workout = "B";
-    else if (widx === 2) data.entries[today].workout = "C";
+    if (widx === 0) data.entries[today].workout = `A`;
+    else if (widx === 1) data.entries[today].workout = `B`;
+    else if (widx === 2) data.entries[today].workout = `C`;
     else if (widx === 3) delete data.entries[today].workout;
     else return;
     cleanupEntry(data, today);
@@ -421,17 +421,17 @@ function cleanupEntry(data, key) {
 
 function formatToday() {
   const d = new Date();
-  const months = ["января","февраля","марта","апреля","мая","июня",
-                  "июля","августа","сентября","октября","ноября","декабря"];
+  const months = [`января`,`февраля`,`марта`,`апреля`,`мая`,`июня`,
+                  `июля`,`августа`,`сентября`,`октября`,`ноября`,`декабря`];
   return `${d.getDate()} ${months[d.getMonth()]}`;
 }
 
 async function prompt(title, placeholder, defaultValue) {
   const a = new Alert();
   a.title = title;
-  a.addTextField(placeholder, defaultValue ? String(defaultValue) : "");
-  a.addAction("Сохранить");
-  a.addCancelAction("Отмена");
+  a.addTextField(placeholder, defaultValue ? String(defaultValue) : ``);
+  a.addAction(`Сохранить`);
+  a.addCancelAction(`Отмена`);
   const idx = await a.present();
   if (idx === 0) return a.textFieldValue(0).trim();
   return null;
@@ -441,9 +441,9 @@ async function importJSON(data) {
   const json = Pasteboard.paste();
   if (!json || json.length < 5) {
     const a = new Alert();
-    a.title = "Буфер пуст";
-    a.message = "Скопируй JSON из PWA (кнопка «экспортировать данные») и попробуй снова.";
-    a.addAction("OK");
+    a.title = `Буфер пуст`;
+    a.message = `Скопируй JSON из PWA (кнопка «экспортировать данные») и попробуй снова.`;
+    a.addAction(`OK`);
     await a.present();
     return;
   }
@@ -457,15 +457,15 @@ async function importJSON(data) {
     }
     saveData(data);
     const a = new Alert();
-    a.title = "Импортировано";
+    a.title = `Импортировано`;
     a.message = `${count} записей объединено с текущими данными.`;
-    a.addAction("OK");
+    a.addAction(`OK`);
     await a.present();
   } catch (e) {
     const a = new Alert();
-    a.title = "Ошибка";
-    a.message = "В буфере не JSON или он повреждён.";
-    a.addAction("OK");
+    a.title = `Ошибка`;
+    a.message = `В буфере не JSON или он повреждён.`;
+    a.addAction(`OK`);
     await a.present();
   }
 }
@@ -473,9 +473,9 @@ async function importJSON(data) {
 async function exportJSON(data) {
   Pasteboard.copy(JSON.stringify(data, null, 2));
   const a = new Alert();
-  a.title = "Экспортировано";
+  a.title = `Экспортировано`;
   a.message = `${Object.keys(data.entries).length} записей скопированы в буфер обмена. Теперь можно вставить в PWA или в заметку.`;
-  a.addAction("OK");
+  a.addAction(`OK`);
   await a.present();
 }
 
