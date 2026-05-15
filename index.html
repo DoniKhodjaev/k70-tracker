@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0A1929">
+<meta name="description" content="Персональный трекер веса, калорий и тренировок">
+
+<!-- PWA / iOS -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="К 70">
+
+<title>Дорога к 70</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy-deep: #0A1929;
+  --navy: #11233E;
+  --navy-darker: #060F1C;
+  --cream: #F5EFE6;
+  --cream-2: #B8B5AC;
+  --cream-3: #8A8780;
+  --gold: #D4B886;
+  --sage: #9DBE9D;
+  --rose: #C89090;
+  --surface-1: rgba(245, 239, 230, 0.035);
+  --surface-2: rgba(245, 239, 230, 0.055);
+  --border-1: rgba(245, 239, 230, 0.12);
+  --border-2: rgba(245, 239, 230, 0.18);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --safe-top: env(safe-area-inset-top, 0);
+  --safe-bottom: env(safe-area-inset-bottom, 0);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: var(--navy-deep);
+  color: var(--cream);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body {
+  background: radial-gradient(ellipse at top, var(--navy) 0%, var(--navy-deep) 60%, var(--navy-darker) 100%);
+  background-attachment: fixed;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+input, button, textarea {
+  font-family: inherit;
+  font-size: 16px; /* prevents iOS zoom */
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+input[type="number"] { -moz-appearance: textfield; }
+
+::placeholder { color: rgba(245, 239, 230, 0.25); font-weight: 300; }
+
+button { cursor: pointer; }
+
+/* Layout */
+.app {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 5rem;
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 2rem; }
+.brand {
+  font-size: 0.6rem; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--cream-3); margin-bottom: 0.85rem;
+}
+.title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300; font-size: 2.5rem; margin: 0; letter-spacing: 0.01em;
+  line-height: 1;
+}
+.divider { width: 32px; height: 0.5px; background: var(--cream-2); margin: 1rem auto; opacity: 0.4; }
+
+.head-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1.5rem;
+}
+.head-stat {
+  padding: 0.85rem 0.5rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+}
+.head-stat-label {
+  font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--cream-3); margin-bottom: 0.4rem;
+}
+.head-stat-value {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 400; line-height: 1;
+}
+.head-stat-value.accent { color: var(--gold); }
+.head-stat-unit {
+  font-family: 'Inter', sans-serif; font-size: 0.55rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--cream-3); margin-left: 0.3rem;
+}
+
+/* Date navigator */
+.date-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin: 2rem 0 0.85rem;
+  padding: 0.5rem 0;
+}
+.date-arrow {
+  width: 44px; height: 44px;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.4s var(--ease);
+}
+.date-arrow:active { transform: scale(0.95); background: var(--surface-2); }
+.date-arrow:disabled { opacity: 0.3; }
+.date-display { text-align: center; flex: 1; }
+.date-label {
+  font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--cream-3); margin-bottom: 0.2rem;
+}
+.date-value {
+  font-family: 'Cormorant Garamond', serif; font-weight: 400;
+  font-size: 1.1rem; letter-spacing: 0.02em;
+}
+
+/* Cards */
+.card {
+  padding: 1.1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  margin-bottom: 0.65rem;
+  transition: border-color 0.4s var(--ease);
+}
+.card.saved { border-color: rgba(157, 190, 157, 0.3); }
+.card-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 0.75rem;
+}
+.card-label {
+  font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--cream-3); display: flex; align-items: center; gap: 0.45rem;
+}
+.card-target {
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-3);
+}
+
+/* Weight input with stepper */
+.value-row {
+  display: flex; align-items: center; gap: 0.65rem;
+}
+.step-btn {
+  width: 38px; height: 38px;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-2);
+  border-radius: 50%;
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s var(--ease);
+}
+.step-btn:active { transform: scale(0.9); background: var(--cream); color: var(--navy-deep); }
+
+.big-input {
+  flex: 1;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.1rem;
+  font-weight: 400;
+  text-align: center;
+  padding: 0.2rem 0;
+  color: var(--cream);
+  letter-spacing: 0.01em;
+}
+.unit {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-3); margin-left: 0.4rem;
+}
+
+/* Quick add buttons */
+.quick-adds {
+  display: flex; gap: 0.4rem; margin-top: 0.75rem;
+}
+.quick-add {
+  flex: 1;
+  padding: 0.6rem 0.3rem;
+  background: transparent;
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  color: var(--cream-2);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s var(--ease);
+}
+.quick-add:active {
+  background: var(--cream);
+  color: var(--navy-deep);
+  border-color: var(--cream);
+}
+
+/* Progress bar */
+.progress-track {
+  height: 1px; background: rgba(245, 239, 230, 0.08);
+  margin-top: 0.85rem; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: var(--gold);
+  transition: width 0.6s var(--ease);
+}
+
+/* Workout grid */
+.workout-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;
+}
+.workout-btn {
+  padding: 0.85rem 0.3rem;
+  background: transparent;
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--cream-2);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s var(--ease);
+}
+.workout-btn.active {
+  background: var(--cream);
+  color: var(--navy-deep);
+  border-color: var(--cream);
+  font-weight: 500;
+}
+
+/* Notes */
+.notes-input {
+  width: 100%;
+  min-height: 60px;
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--cream);
+  resize: none;
+  font-weight: 300;
+}
+
+/* Section labels */
+.section-label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--cream-3); margin: 2rem 0 0.85rem;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.section-action {
+  background: transparent; border: none; color: var(--cream-2);
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+}
+
+/* Chart */
+.chart-wrap {
+  padding: 1.5rem 1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+}
+.chart-wrap svg { width: 100%; height: auto; display: block; }
+
+/* Stats grid */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+}
+.stat-card {
+  padding: 1rem 0.5rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  text-align: center;
+}
+.stat-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.45rem; font-weight: 400; color: var(--cream); margin-bottom: 0.3rem; line-height: 1;
+}
+.stat-unit {
+  font-family: 'Inter', sans-serif; font-size: 0.55rem; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--cream-3); margin-left: 0.2rem;
+}
+.stat-label {
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-3);
+}
+
+/* Projection */
+.projection {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(212, 184, 134, 0.06);
+  border: 0.5px solid rgba(212, 184, 134, 0.25);
+  border-radius: 2px;
+  text-align: center;
+}
+.projection-label {
+  font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.4rem;
+}
+.projection-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-weight: 400; color: var(--cream); line-height: 1.5;
+}
+
+/* History */
+.history {
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.history-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.85rem 1rem;
+  border-bottom: 0.5px solid rgba(245, 239, 230, 0.08);
+}
+.history-row:last-child { border-bottom: none; }
+.history-date {
+  font-size: 0.7rem; letter-spacing: 0.15em;
+  color: var(--cream-2); font-family: 'JetBrains Mono', monospace;
+}
+.history-values {
+  display: flex; gap: 0.75rem; font-size: 0.7rem; color: var(--cream);
+  align-items: center; flex-wrap: wrap; justify-content: flex-end;
+}
+.workout-tag {
+  display: inline-flex; align-items: center; gap: 0.2rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(212, 184, 134, 0.15);
+  color: var(--gold);
+  border-radius: 2px; font-size: 0.6rem; letter-spacing: 0.1em;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: calc(1.5rem + var(--safe-bottom));
+  left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--cream);
+  color: var(--navy-deep);
+  padding: 0.7rem 1.5rem;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.5s var(--ease);
+  z-index: 100;
+  pointer-events: none;
+}
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Install prompt */
+.install-banner {
+  position: fixed; bottom: calc(1rem + var(--safe-bottom)); left: 1rem; right: 1rem;
+  max-width: 480px; margin: 0 auto;
+  padding: 0.85rem 1rem;
+  background: var(--cream);
+  color: var(--navy-deep);
+  border-radius: 4px;
+  display: none;
+  align-items: center; justify-content: space-between;
+  gap: 1rem;
+  z-index: 50;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+.install-banner.show { display: flex; }
+.install-banner-text { font-size: 0.75rem; line-height: 1.4; }
+.install-banner-actions { display: flex; gap: 0.5rem; }
+.install-banner button {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border-radius: 2px;
+}
+.install-btn { background: var(--navy-deep); color: var(--cream); }
+.dismiss-btn { background: transparent; color: var(--navy-deep); }
+
+/* Footer */
+.footer {
+  margin-top: 3rem; text-align: center;
+  font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: rgba(184, 181, 172, 0.4);
+}
+
+.export-btn {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.85rem;
+  background: transparent;
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--cream-2);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  transition: all 0.4s var(--ease);
+}
+.export-btn:active {
+  background: var(--cream); color: var(--navy-deep);
+}
+
+/* Icons (inline SVG, stroke-width 1.5) */
+.ic { width: 14px; height: 14px; stroke-width: 1.5; vertical-align: middle; }
+.ic-lg { width: 18px; height: 18px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header">
+    <div class="brand">персональный трекер</div>
+    <h1 class="title">Дорога к 70</h1>
+    <div class="divider"></div>
+
+    <div class="head-stats">
+      <div class="head-stat">
+        <div class="head-stat-label">текущий</div>
+        <div class="head-stat-value" id="stat-current">—<span class="head-stat-unit">кг</span></div>
+      </div>
+      <div class="head-stat">
+        <div class="head-stat-label">сброшено</div>
+        <div class="head-stat-value accent" id="stat-lost">—<span class="head-stat-unit">кг</span></div>
+      </div>
+      <div class="head-stat">
+        <div class="head-stat-label">серия</div>
+        <div class="head-stat-value" id="stat-streak">0<span class="head-stat-unit">дн</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Date navigator -->
+  <div class="date-nav">
+    <button class="date-arrow" id="prev-day" aria-label="Предыдущий день">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="date-display">
+      <div class="date-label" id="date-rel">Сегодня</div>
+      <div class="date-value" id="date-value">—</div>
+    </div>
+    <button class="date-arrow" id="next-day" aria-label="Следующий день">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <!-- Weight -->
+  <div class="card" id="card-weight">
+    <div class="card-label">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 17l-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg>
+      Вес
+    </div>
+    <div class="value-row">
+      <button class="step-btn" data-step="weight" data-delta="-0.1">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/></svg>
+      </button>
+      <input type="number" inputmode="decimal" step="0.1" class="big-input" id="input-weight" placeholder="—">
+      <span class="unit">кг</span>
+      <button class="step-btn" data-step="weight" data-delta="0.1">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Calories -->
+  <div class="card" id="card-calories">
+    <div class="card-header">
+      <div class="card-label">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
+        Калории
+      </div>
+      <div class="card-target">цель 1 800</div>
+    </div>
+    <div class="value-row">
+      <input type="number" inputmode="numeric" class="big-input" id="input-calories" placeholder="—">
+      <span class="unit">ккал</span>
+    </div>
+    <div class="quick-adds">
+      <button class="quick-add" data-add="calories" data-amount="100">+100</button>
+      <button class="quick-add" data-add="calories" data-amount="300">+300</button>
+      <button class="quick-add" data-add="calories" data-amount="500">+500</button>
+      <button class="quick-add" data-add="calories" data-amount="-100">−100</button>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-cal"></div></div>
+  </div>
+
+  <!-- Steps -->
+  <div class="card" id="card-steps">
+    <div class="card-header">
+      <div class="card-label">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 4v16M17 4v16M3 8h4M3 12h4M3 16h4"/></svg>
+        Шаги
+      </div>
+      <div class="card-target">цель 9 000</div>
+    </div>
+    <div class="value-row">
+      <input type="number" inputmode="numeric" class="big-input" id="input-steps" placeholder="—">
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-steps"></div></div>
+  </div>
+
+  <!-- Workout -->
+  <div class="card" id="card-workout">
+    <div class="card-label">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6.5 6.5L3 10l4 4-3.5 3.5M17.5 17.5l3.5-3.5-4-4 3.5-3.5M14 7l3 3M7 14l3 3"/></svg>
+      Тренировка
+    </div>
+    <div class="workout-grid">
+      <button class="workout-btn" data-workout="none">—</button>
+      <button class="workout-btn" data-workout="A">A · ноги</button>
+      <button class="workout-btn" data-workout="B">B · спина</button>
+      <button class="workout-btn" data-workout="C">C · полное</button>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="card" id="card-notes">
+    <div class="card-label">Заметка</div>
+    <textarea class="notes-input" id="input-notes" placeholder="как самочувствие, что съел не по плану, как прошла тренировка"></textarea>
+  </div>
+
+  <!-- Chart -->
+  <div id="chart-section" style="display:none">
+    <div class="section-label">Динамика веса</div>
+    <div class="chart-wrap">
+      <svg id="chart" viewBox="0 0 320 160" preserveAspectRatio="none"></svg>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="section-label">Сводка</div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="stat-tot-lost">0<span class="stat-unit">кг</span></div>
+      <div class="stat-label">сброшено</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-workouts">0</div>
+      <div class="stat-label">тренировок</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-days">0</div>
+      <div class="stat-label">дней</div>
+    </div>
+  </div>
+
+  <!-- Projection -->
+  <div id="projection" class="projection" style="display:none">
+    <div class="projection-label">прогноз</div>
+    <div class="projection-text" id="projection-text"></div>
+  </div>
+
+  <!-- History -->
+  <div class="section-label">
+    История
+    <button class="section-action" id="toggle-history">все дни</button>
+  </div>
+  <div class="history" id="history"></div>
+
+  <!-- Export -->
+  <button class="export-btn" id="export-btn">экспортировать данные</button>
+
+  <div class="footer">offline · pwa · данные на устройстве</div>
+</div>
+
+<!-- Install banner -->
+<div class="install-banner" id="install-banner">
+  <div class="install-banner-text">Установить на главный экран?</div>
+  <div class="install-banner-actions">
+    <button class="install-btn" id="install-confirm">Да</button>
+    <button class="dismiss-btn" id="install-dismiss">Нет</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">сохранено</div>
+
+<script>
+// ============ STATE ============
+const STORAGE_KEY = 'k70-data-v1';
+const TARGETS = {
+  weight: 70,
+  calories: 1800,
+  steps: 9000,
+  startWeight: 85,
+};
+
+let state = {
+  entries: {},   // { '2026-05-15': { weight, calories, steps, workout, notes } }
+  currentDate: dateKey(new Date()),
+  historyExpanded: false,
+};
+
+// ============ STORAGE ============
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      state.entries = parsed.entries || {};
+    }
+  } catch (e) { console.error('load failed', e); }
+}
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      entries: state.entries,
+      version: 1,
+    }));
+  } catch (e) { console.error('save failed', e); }
+}
+
+// ============ HELPERS ============
+function dateKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+function dateFromKey(key) {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function formatDate(key) {
+  const d = dateFromKey(key);
+  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  return `${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+function formatDateShort(key) {
+  const [, m, d] = key.split('-');
+  return `${parseInt(d)}.${m}`;
+}
+
+function relativeDate(key) {
+  const today = dateKey(new Date());
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  const yKey = dateKey(y);
+  const t = new Date(); t.setDate(t.getDate() + 1);
+  const tKey = dateKey(t);
+
+  if (key === today) return 'Сегодня';
+  if (key === yKey) return 'Вчера';
+  if (key === tKey) return 'Завтра';
+
+  const d = dateFromKey(key);
+  const diff = Math.round((d - new Date(today)) / 86400000);
+  return diff > 0 ? `через ${diff} дн` : `${Math.abs(diff)} дн назад`;
+}
+
+function getEntry(key) {
+  return state.entries[key] || {};
+}
+
+function setEntry(key, field, value) {
+  const e = state.entries[key] || {};
+  if (value === '' || value == null) {
+    delete e[field];
+  } else {
+    e[field] = value;
+  }
+  if (Object.keys(e).length === 0) {
+    delete state.entries[key];
+  } else {
+    state.entries[key] = e;
+  }
+  save();
+}
+
+function vibrate(ms) {
+  if (navigator.vibrate) try { navigator.vibrate(ms); } catch(e) {}
+}
+
+function showToast(text) {
+  const t = document.getElementById('toast');
+  t.textContent = text;
+  t.classList.add('show');
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+function flashSaved(cardId) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  el.classList.add('saved');
+  setTimeout(() => el.classList.remove('saved'), 700);
+}
+
+// ============ RENDER ============
+function renderHeader() {
+  const dates = Object.keys(state.entries).sort();
+  const wEntries = dates.filter(d => state.entries[d].weight).map(d => ({
+    date: d, w: parseFloat(state.entries[d].weight),
+  }));
+
+  const latest = wEntries.length ? wEntries[wEntries.length - 1].w : null;
+  const first = wEntries.length ? wEntries[0].w : null;
+  const lost = first !== null && latest !== null ? (first - latest) : null;
+
+  document.getElementById('stat-current').innerHTML =
+    latest !== null ? `${latest.toFixed(1)}<span class="head-stat-unit">кг</span>` : `—<span class="head-stat-unit">кг</span>`;
+
+  document.getElementById('stat-lost').innerHTML =
+    lost !== null && lost > 0 ? `${lost.toFixed(1)}<span class="head-stat-unit">кг</span>` : `—<span class="head-stat-unit">кг</span>`;
+
+  document.getElementById('stat-streak').innerHTML =
+    `${calcStreak()}<span class="head-stat-unit">дн</span>`;
+}
+
+function renderDateNav() {
+  const k = state.currentDate;
+  document.getElementById('date-rel').textContent = relativeDate(k);
+  document.getElementById('date-value').textContent = formatDate(k);
+
+  // disable next if it's already future
+  const todayK = dateKey(new Date());
+  const isFuture = k >= todayK;
+  document.getElementById('next-day').disabled = false; // allow planning ahead
+}
+
+function renderInputs() {
+  const e = getEntry(state.currentDate);
+  document.getElementById('input-weight').value = e.weight || '';
+  document.getElementById('input-calories').value = e.calories || '';
+  document.getElementById('input-steps').value = e.steps || '';
+  document.getElementById('input-notes').value = e.notes || '';
+
+  // workout
+  document.querySelectorAll('.workout-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.workout === (e.workout || 'none'));
+  });
+
+  // progress bars
+  const cal = parseFloat(e.calories) || 0;
+  const steps = parseFloat(e.steps) || 0;
+  document.getElementById('prog-cal').style.width = Math.min(100, (cal / TARGETS.calories) * 100) + '%';
+  document.getElementById('prog-steps').style.width = Math.min(100, (steps / TARGETS.steps) * 100) + '%';
+}
+
+function renderChart() {
+  const dates = Object.keys(state.entries).sort();
+  const data = dates
+    .filter(d => state.entries[d].weight)
+    .map(d => ({ date: d, w: parseFloat(state.entries[d].weight) }));
+
+  if (data.length < 2) {
+    document.getElementById('chart-section').style.display = 'none';
+    return;
+  }
+  document.getElementById('chart-section').style.display = 'block';
+
+  const W = 320, H = 160, padX = 20, padY = 20;
+  const target = TARGETS.weight;
+  const start = TARGETS.startWeight;
+
+  const min = Math.min(target - 1, ...data.map(d => d.w));
+  const max = Math.max(start + 1, ...data.map(d => d.w));
+  const range = max - min || 1;
+
+  const xStep = data.length > 1 ? (W - padX * 2) / (data.length - 1) : 0;
+  const yFor = (w) => H - padY - ((w - min) / range) * (H - padY * 2);
+
+  let svg = '';
+
+  // target line
+  const ty = yFor(target);
+  svg += `<line x1="${padX}" y1="${ty}" x2="${W - padX}" y2="${ty}" stroke="#D4B886" stroke-width="0.5" stroke-dasharray="2,3" />`;
+  svg += `<text x="${W - padX}" y="${ty - 5}" fill="#D4B886" font-size="8" text-anchor="end" letter-spacing="1" font-family="Inter">ЦЕЛЬ ${target}</text>`;
+
+  // start line
+  const sy = yFor(start);
+  svg += `<line x1="${padX}" y1="${sy}" x2="${W - padX}" y2="${sy}" stroke="rgba(245,239,230,0.15)" stroke-width="0.5" stroke-dasharray="2,3" />`;
+  svg += `<text x="${padX}" y="${sy - 5}" fill="rgba(245,239,230,0.4)" font-size="8" letter-spacing="1" font-family="Inter">СТАРТ ${start}</text>`;
+
+  // line
+  const path = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${padX + i * xStep},${yFor(d.w)}`).join(' ');
+  svg += `<path d="${path}" fill="none" stroke="#F5EFE6" stroke-width="1" />`;
+
+  // dots
+  data.forEach((d, i) => {
+    svg += `<circle cx="${padX + i * xStep}" cy="${yFor(d.w)}" r="2" fill="#F5EFE6" />`;
+  });
+
+  document.getElementById('chart').innerHTML = svg;
+}
+
+function renderStats() {
+  const dates = Object.keys(state.entries).sort();
+  const wEntries = dates.filter(d => state.entries[d].weight).map(d => ({
+    date: d, w: parseFloat(state.entries[d].weight),
+  }));
+
+  const first = wEntries.length ? wEntries[0].w : null;
+  const latest = wEntries.length ? wEntries[wEntries.length - 1].w : null;
+  const lost = first !== null && latest !== null ? Math.max(0, first - latest) : 0;
+
+  const workouts = dates.filter(d => state.entries[d].workout && state.entries[d].workout !== 'none').length;
+
+  document.getElementById('stat-tot-lost').innerHTML = `${lost.toFixed(1)}<span class="stat-unit">кг</span>`;
+  document.getElementById('stat-workouts').textContent = workouts;
+  document.getElementById('stat-days').textContent = dates.length;
+
+  // projection: based on average loss per week
+  if (wEntries.length >= 3 && latest > TARGETS.weight) {
+    const firstDate = dateFromKey(wEntries[0].date);
+    const lastDate = dateFromKey(wEntries[wEntries.length - 1].date);
+    const daysSpan = (lastDate - firstDate) / 86400000;
+    if (daysSpan > 0 && lost > 0) {
+      const perDay = lost / daysSpan;
+      const remaining = latest - TARGETS.weight;
+      const daysToGoal = Math.round(remaining / perDay);
+      const goalDate = new Date();
+      goalDate.setDate(goalDate.getDate() + daysToGoal);
+      const perWeek = (perDay * 7).toFixed(2);
+      document.getElementById('projection').style.display = 'block';
+      document.getElementById('projection-text').innerHTML =
+        `При темпе ${perWeek} кг/нед<br>цель к ${formatDate(dateKey(goalDate))}`;
+    } else {
+      document.getElementById('projection').style.display = 'none';
+    }
+  } else {
+    document.getElementById('projection').style.display = 'none';
+  }
+}
+
+function renderHistory() {
+  const dates = Object.keys(state.entries).sort().reverse();
+  const visible = state.historyExpanded ? dates : dates.slice(0, 5);
+
+  const html = visible.map(d => {
+    const e = state.entries[d];
+    const parts = [];
+    if (e.weight) parts.push(`<span>${e.weight} кг</span>`);
+    if (e.calories) parts.push(`<span>${e.calories} ккал</span>`);
+    if (e.steps) parts.push(`<span>${e.steps} ш</span>`);
+    if (e.workout && e.workout !== 'none') {
+      parts.push(`<span class="workout-tag">
+        <svg class="ic" style="width:10px;height:10px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        ${e.workout}</span>`);
+    }
+    return `<div class="history-row">
+      <div class="history-date">${formatDateShort(d)}</div>
+      <div class="history-values">${parts.join('')}</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('history').innerHTML = html || `<div class="history-row"><div class="history-values" style="opacity:0.5">пока пусто</div></div>`;
+  document.getElementById('toggle-history').textContent = state.historyExpanded ? 'свернуть' : 'все дни';
+}
+
+function calcStreak() {
+  const today = new Date();
+  let count = 0;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const e = state.entries[dateKey(d)];
+    if (e && (e.weight || e.calories || e.steps || (e.workout && e.workout !== 'none'))) {
+      count++;
+    } else if (i > 0) {
+      break;
+    }
+  }
+  return count;
+}
+
+function renderAll() {
+  renderHeader();
+  renderDateNav();
+  renderInputs();
+  renderChart();
+  renderStats();
+  renderHistory();
+}
+
+// ============ EVENTS ============
+
+// inputs auto-save on blur and on change
+function bindAutoSave(inputId, field, cardId, isNumber=true) {
+  const el = document.getElementById(inputId);
+  let timer;
+  el.addEventListener('input', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      const val = el.value.trim();
+      setEntry(state.currentDate, field, val);
+      flashSaved(cardId);
+      // refresh dependent UI
+      if (field === 'weight') { renderHeader(); renderChart(); renderStats(); }
+      if (field === 'calories') renderInputs();
+      if (field === 'steps') renderInputs();
+      renderHistory();
+    }, 350);
+  });
+  el.addEventListener('blur', () => {
+    const val = el.value.trim();
+    setEntry(state.currentDate, field, val);
+  });
+}
+
+bindAutoSave('input-weight', 'weight', 'card-weight');
+bindAutoSave('input-calories', 'calories', 'card-calories');
+bindAutoSave('input-steps', 'steps', 'card-steps');
+bindAutoSave('input-notes', 'notes', 'card-notes', false);
+
+// stepper buttons
+document.querySelectorAll('.step-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const field = btn.dataset.step;
+    const delta = parseFloat(btn.dataset.delta);
+    const input = document.getElementById('input-' + field);
+    const current = parseFloat(input.value) || (field === 'weight' ? 85 : 0);
+    const next = Math.max(0, (current + delta));
+    input.value = field === 'weight' ? next.toFixed(1) : next.toString();
+    setEntry(state.currentDate, field, input.value);
+    flashSaved('card-' + field);
+    vibrate(10);
+    if (field === 'weight') { renderHeader(); renderChart(); renderStats(); }
+    renderInputs();
+    renderHistory();
+  });
+});
+
+// quick adds
+document.querySelectorAll('.quick-add').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const field = btn.dataset.add;
+    const amount = parseInt(btn.dataset.amount);
+    const input = document.getElementById('input-' + field);
+    const current = parseInt(input.value) || 0;
+    const next = Math.max(0, current + amount);
+    input.value = next;
+    setEntry(state.currentDate, field, next.toString());
+    flashSaved('card-' + field);
+    vibrate(10);
+    renderInputs();
+    renderHistory();
+    showToast(amount > 0 ? `+${amount}` : `${amount}`);
+  });
+});
+
+// workout buttons
+document.querySelectorAll('.workout-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const w = btn.dataset.workout;
+    setEntry(state.currentDate, 'workout', w);
+    document.querySelectorAll('.workout-btn').forEach(b => b.classList.toggle('active', b === btn));
+    flashSaved('card-workout');
+    vibrate(15);
+    renderHeader();
+    renderStats();
+    renderHistory();
+    if (w !== 'none') showToast(`тренировка ${w}`);
+  });
+});
+
+// date navigation
+document.getElementById('prev-day').addEventListener('click', () => {
+  const d = dateFromKey(state.currentDate);
+  d.setDate(d.getDate() - 1);
+  state.currentDate = dateKey(d);
+  renderAll();
+  vibrate(10);
+});
+document.getElementById('next-day').addEventListener('click', () => {
+  const d = dateFromKey(state.currentDate);
+  d.setDate(d.getDate() + 1);
+  state.currentDate = dateKey(d);
+  renderAll();
+  vibrate(10);
+});
+
+// double tap on date to go to today
+document.querySelector('.date-display').addEventListener('click', () => {
+  state.currentDate = dateKey(new Date());
+  renderAll();
+  vibrate(15);
+});
+
+// history toggle
+document.getElementById('toggle-history').addEventListener('click', () => {
+  state.historyExpanded = !state.historyExpanded;
+  renderHistory();
+});
+
+// export
+document.getElementById('export-btn').addEventListener('click', () => {
+  const data = { entries: state.entries, exported: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `k70-export-${dateKey(new Date())}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('экспортировано');
+});
+
+// ============ SERVICE WORKER ============
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.error('SW reg failed', e));
+  });
+}
+
+// ============ INSTALL PROMPT ============
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => {
+    if (!localStorage.getItem('install-dismissed')) {
+      document.getElementById('install-banner').classList.add('show');
+    }
+  }, 5000);
+});
+
+document.getElementById('install-confirm').addEventListener('click', async () => {
+  document.getElementById('install-banner').classList.remove('show');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  }
+});
+
+document.getElementById('install-dismiss').addEventListener('click', () => {
+  document.getElementById('install-banner').classList.remove('show');
+  localStorage.setItem('install-dismissed', '1');
+});
+
+// ============ INIT ============
+load();
+renderAll();
+</script>
+
+</body>
+</html>
