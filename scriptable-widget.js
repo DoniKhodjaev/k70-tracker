@@ -370,7 +370,7 @@ async function showMenu(data) {
   if (idx === 0) {
     const v = await prompt(`Вес сегодня`, `85.0`, data.entries[today].weight);
     if (v !== null) {
-      if (v === ``) delete data.entries[today].weight;
+      if (v.length === 0) delete data.entries[today].weight;
       else data.entries[today].weight = v;
       cleanupEntry(data, today);
       saveData(data);
@@ -378,7 +378,7 @@ async function showMenu(data) {
   } else if (idx === 1) {
     const v = await prompt(`Калории сегодня`, `1800`, data.entries[today].calories);
     if (v !== null) {
-      if (v === ``) delete data.entries[today].calories;
+      if (v.length === 0) delete data.entries[today].calories;
       else data.entries[today].calories = v;
       cleanupEntry(data, today);
       saveData(data);
@@ -386,7 +386,7 @@ async function showMenu(data) {
   } else if (idx === 2) {
     const v = await prompt(`Шаги сегодня`, `9000`, data.entries[today].steps);
     if (v !== null) {
-      if (v === ``) delete data.entries[today].steps;
+      if (v.length === 0) delete data.entries[today].steps;
       else data.entries[today].steps = v;
       cleanupEntry(data, today);
       saveData(data);
@@ -429,7 +429,7 @@ function formatToday() {
 async function prompt(title, placeholder, defaultValue) {
   const a = new Alert();
   a.title = title;
-  a.addTextField(placeholder, defaultValue ? String(defaultValue) : ``);
+  a.addTextField(placeholder, defaultValue ? String(defaultValue) : String.fromCharCode());
   a.addAction(`Сохранить`);
   a.addCancelAction(`Отмена`);
   const idx = await a.present();
