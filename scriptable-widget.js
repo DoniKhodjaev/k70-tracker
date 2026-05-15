@@ -110,8 +110,8 @@ function drawChart(data, width, height) {
   const target = TARGETS.weight;
   const start = TARGETS.startWeight;
 
-  const min = Math.min(target - 1, ...data.map(d => d.w));
-  const max = Math.max(start + 1, ...data.map(d => d.w));
+  const min = data.reduce((m, d) => Math.min(m, d.w), target - 1);
+  const max = data.reduce((m, d) => Math.max(m, d.w), start + 1);
   const range = max - min || 1;
 
   const xStep = (width - padX * 2) / (data.length - 1);
