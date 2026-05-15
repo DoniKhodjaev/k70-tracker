@@ -370,6 +370,211 @@ button { cursor: pointer; }
   border-radius: 2px; font-size: 0.6rem; letter-spacing: 0.1em;
 }
 
+/* Food library */
+.foods-section { margin-bottom: 0.65rem; }
+.foods-header {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin: 0.1rem 0.1rem 0.55rem;
+}
+.foods-label {
+  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--cream-3);
+}
+.foods-edit {
+  background: transparent; border: none; color: var(--cream-2);
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 0.2rem 0.4rem;
+}
+.foods-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem;
+}
+.food-chip {
+  padding: 0.65rem 0.7rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  color: var(--cream);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  transition: all 0.3s var(--ease);
+  font-family: inherit;
+}
+.food-chip:active {
+  background: var(--cream);
+  color: var(--navy-deep);
+  border-color: var(--cream);
+  transform: scale(0.98);
+}
+.food-chip-name {
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+.food-chip-cal {
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--cream-3);
+}
+.food-chip:active .food-chip-cal {
+  color: var(--navy-deep);
+  opacity: 0.55;
+}
+
+/* Library modal */
+.library-modal {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at top, var(--navy) 0%, var(--navy-deep) 60%, var(--navy-darker) 100%);
+  z-index: 200;
+  overflow-y: auto;
+  padding: calc(1.5rem + var(--safe-top)) 1.25rem calc(2rem + var(--safe-bottom));
+  display: none;
+}
+.library-modal.show { display: block; animation: slideInUp 0.4s var(--ease); }
+@keyframes slideInUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.modal-header {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.modal-back {
+  width: 40px; height: 40px;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  color: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-back:active { background: var(--surface-2); }
+.modal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 300; margin: 0;
+  letter-spacing: 0.01em;
+}
+.food-add-btn {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  background: var(--cream);
+  color: var(--navy-deep);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.food-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.food-item {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+}
+.food-item-info { flex: 1; min-width: 0; }
+.food-item-name {
+  font-size: 0.85rem;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+  font-weight: 400;
+}
+.food-item-meta {
+  font-size: 0.62rem;
+  color: var(--cream-3);
+  letter-spacing: 0.05em;
+}
+.food-item-delete {
+  width: 34px; height: 34px;
+  background: transparent;
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  color: var(--cream-3);
+  display: flex; align-items: center; justify-content: center;
+  margin-left: 0.5rem;
+}
+.food-item-delete:active { background: rgba(180, 80, 80, 0.15); color: var(--rose); }
+
+/* Food edit form overlay */
+.food-form-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 300;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+.food-form-overlay.show { display: flex; animation: fadeIn 0.25s var(--ease); }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.food-form {
+  width: 100%;
+  max-width: 520px;
+  background: var(--navy-deep);
+  border-top: 0.5px solid var(--border-1);
+  padding: 1.5rem 1.25rem calc(1.5rem + var(--safe-bottom));
+  animation: slideInUp 0.3s var(--ease);
+}
+.food-form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300;
+  margin: 0 0 1.5rem;
+  text-align: center;
+}
+.food-form-field { margin-bottom: 1rem; }
+.food-form-label {
+  display: block;
+  font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+  color: var(--cream-3); margin-bottom: 0.5rem;
+}
+.food-form-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--cream);
+  font-size: 16px;
+  font-weight: 300;
+}
+.food-form-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+.food-form-btn {
+  flex: 1;
+  padding: 0.85rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: none;
+}
+.food-form-save {
+  background: var(--cream);
+  color: var(--navy-deep);
+}
+.food-form-cancel {
+  background: transparent;
+  border: 0.5px solid var(--border-2);
+  color: var(--cream-2);
+}
+
 /* Toast */
 .toast {
   position: fixed; bottom: calc(1.5rem + var(--safe-bottom));
@@ -527,6 +732,15 @@ button { cursor: pointer; }
     <div class="progress-track"><div class="progress-fill" id="prog-cal"></div></div>
   </div>
 
+  <!-- Food quick-add chips -->
+  <div class="foods-section">
+    <div class="foods-header">
+      <div class="foods-label">Часто</div>
+      <button class="foods-edit" id="foods-edit-btn">библиотека</button>
+    </div>
+    <div class="foods-grid" id="foods-grid"></div>
+  </div>
+
   <!-- Steps -->
   <div class="card" id="card-steps">
     <div class="card-header">
@@ -615,6 +829,37 @@ button { cursor: pointer; }
   </div>
 </div>
 
+<!-- Library modal -->
+<div class="library-modal" id="library-modal">
+  <div class="modal-header">
+    <button class="modal-back" id="library-close" aria-label="Назад">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <h2 class="modal-title">Библиотека блюд</h2>
+  </div>
+  <button class="food-add-btn" id="food-add-btn">+ добавить блюдо</button>
+  <div class="food-list" id="food-list"></div>
+</div>
+
+<!-- Food form overlay -->
+<div class="food-form-overlay" id="food-form-overlay">
+  <div class="food-form">
+    <div class="food-form-title" id="food-form-title">Новое блюдо</div>
+    <div class="food-form-field">
+      <label class="food-form-label">Название</label>
+      <input type="text" class="food-form-input" id="food-form-name" placeholder="например, плов 200г">
+    </div>
+    <div class="food-form-field">
+      <label class="food-form-label">Калории</label>
+      <input type="number" inputmode="numeric" class="food-form-input" id="food-form-cal" placeholder="350">
+    </div>
+    <div class="food-form-actions">
+      <button class="food-form-btn food-form-cancel" id="food-form-cancel">отмена</button>
+      <button class="food-form-btn food-form-save" id="food-form-save">сохранить</button>
+    </div>
+  </div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast">сохранено</div>
 
@@ -628,11 +873,30 @@ const TARGETS = {
   startWeight: 85,
 };
 
+const DEFAULT_FOODS = [
+  { id: 'f1', name: 'Лепёшка 1/4', calories: 100, usage: 0 },
+  { id: 'f2', name: 'Плов 200г', calories: 350, usage: 0 },
+  { id: 'f3', name: 'Манты 5 шт', calories: 450, usage: 0 },
+  { id: 'f4', name: 'Шурпа 300мл', calories: 250, usage: 0 },
+  { id: 'f5', name: 'Самса', calories: 280, usage: 0 },
+  { id: 'f6', name: 'Курица 150г', calories: 250, usage: 0 },
+  { id: 'f7', name: 'Творог 200г', calories: 200, usage: 0 },
+  { id: 'f8', name: 'Кефир 250мл', calories: 150, usage: 0 },
+  { id: 'f9', name: 'Яйцо', calories: 70, usage: 0 },
+  { id: 'f10', name: 'Орехи 30г', calories: 180, usage: 0 },
+  { id: 'f11', name: 'Чай с сахаром', calories: 20, usage: 0 },
+  { id: 'f12', name: 'Лаваш', calories: 120, usage: 0 },
+];
+const CHIP_COUNT = 8;
+
 let state = {
   entries: {},   // { '2026-05-15': { weight, calories, steps, workout, notes } }
   currentDate: dateKey(new Date()),
   historyExpanded: false,
 };
+
+let foodLibrary = [];
+let editingFoodId = null;
 
 // ============ STORAGE ============
 function load() {
@@ -641,15 +905,26 @@ function load() {
     if (raw) {
       const parsed = JSON.parse(raw);
       state.entries = parsed.entries || {};
+      if (parsed.foodLibrary && Array.isArray(parsed.foodLibrary)) {
+        foodLibrary = parsed.foodLibrary;
+      } else {
+        foodLibrary = DEFAULT_FOODS.slice();
+      }
+    } else {
+      foodLibrary = DEFAULT_FOODS.slice();
     }
-  } catch (e) { console.error('load failed', e); }
+  } catch (e) {
+    console.error('load failed', e);
+    foodLibrary = DEFAULT_FOODS.slice();
+  }
 }
 
 function save() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       entries: state.entries,
-      version: 1,
+      foodLibrary: foodLibrary,
+      version: 2,
     }));
   } catch (e) { console.error('save failed', e); }
 }
@@ -1085,9 +1360,155 @@ document.getElementById('install-dismiss').addEventListener('click', () => {
   localStorage.setItem('install-dismissed', '1');
 });
 
+// ============ FOOD LIBRARY ============
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function renderFoodChips() {
+  const grid = document.getElementById('foods-grid');
+  if (!grid) return;
+  const sorted = foodLibrary.slice().sort((a, b) => {
+    const ub = b.usage || 0, ua = a.usage || 0;
+    if (ub !== ua) return ub - ua;
+    return a.name.localeCompare(b.name, 'ru');
+  });
+  const top = sorted.slice(0, CHIP_COUNT);
+  grid.innerHTML = top.map(f => `
+    <button class="food-chip" data-food-id="${f.id}">
+      <div class="food-chip-name">${escapeHtml(f.name)}</div>
+      <div class="food-chip-cal">+${f.calories} ккал</div>
+    </button>
+  `).join('');
+  grid.querySelectorAll('.food-chip').forEach(chip => {
+    chip.addEventListener('click', () => addFoodToToday(chip.dataset.foodId));
+  });
+}
+
+function addFoodToToday(foodId) {
+  const food = foodLibrary.find(f => f.id === foodId);
+  if (!food) return;
+  const entry = state.entries[state.currentDate] || {};
+  const current = parseInt(entry.calories) || 0;
+  const newTotal = current + food.calories;
+  setEntry(state.currentDate, 'calories', String(newTotal));
+  food.usage = (food.usage || 0) + 1;
+  save();
+  document.getElementById('input-calories').value = newTotal;
+  flashSaved('card-calories');
+  vibrate(15);
+  renderInputs();
+  renderHistory();
+  renderFoodChips();
+  showToast(`${food.name} · +${food.calories}`);
+}
+
+function openLibrary() {
+  renderFoodList();
+  document.getElementById('library-modal').classList.add('show');
+}
+
+function closeLibrary() {
+  document.getElementById('library-modal').classList.remove('show');
+}
+
+function renderFoodList() {
+  const list = document.getElementById('food-list');
+  const sorted = foodLibrary.slice().sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+  if (sorted.length === 0) {
+    list.innerHTML = '<div style="opacity:0.5;text-align:center;padding:2rem;font-size:0.8rem">пусто</div>';
+    return;
+  }
+  list.innerHTML = sorted.map(f => `
+    <div class="food-item">
+      <div class="food-item-info" data-food-id="${f.id}">
+        <div class="food-item-name">${escapeHtml(f.name)}</div>
+        <div class="food-item-meta">${f.calories} ккал · использовано ${f.usage || 0}</div>
+      </div>
+      <button class="food-item-delete" data-food-id="${f.id}" aria-label="Удалить">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      </button>
+    </div>
+  `).join('');
+  list.querySelectorAll('.food-item-info').forEach(el => {
+    el.addEventListener('click', () => openFoodForm(el.dataset.foodId));
+  });
+  list.querySelectorAll('.food-item-delete').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteFood(el.dataset.foodId);
+    });
+  });
+}
+
+function openFoodForm(foodId) {
+  editingFoodId = foodId || null;
+  const title = document.getElementById('food-form-title');
+  const nameInput = document.getElementById('food-form-name');
+  const calInput = document.getElementById('food-form-cal');
+  if (foodId) {
+    const food = foodLibrary.find(f => f.id === foodId);
+    if (!food) return;
+    title.textContent = 'Изменить';
+    nameInput.value = food.name;
+    calInput.value = food.calories;
+  } else {
+    title.textContent = 'Новое блюдо';
+    nameInput.value = '';
+    calInput.value = '';
+  }
+  document.getElementById('food-form-overlay').classList.add('show');
+  setTimeout(() => nameInput.focus(), 150);
+}
+
+function closeFoodForm() {
+  document.getElementById('food-form-overlay').classList.remove('show');
+  editingFoodId = null;
+}
+
+function saveFoodForm() {
+  const name = document.getElementById('food-form-name').value.trim();
+  const cal = parseInt(document.getElementById('food-form-cal').value);
+  if (!name || isNaN(cal) || cal < 0) {
+    showToast('заполни название и калории');
+    return;
+  }
+  if (editingFoodId) {
+    const food = foodLibrary.find(f => f.id === editingFoodId);
+    if (food) { food.name = name; food.calories = cal; }
+  } else {
+    foodLibrary.push({ id: 'f' + Date.now(), name, calories: cal, usage: 0 });
+  }
+  save();
+  renderFoodList();
+  renderFoodChips();
+  closeFoodForm();
+  showToast('сохранено');
+}
+
+function deleteFood(foodId) {
+  foodLibrary = foodLibrary.filter(f => f.id !== foodId);
+  save();
+  renderFoodList();
+  renderFoodChips();
+  showToast('удалено');
+}
+
+document.getElementById('foods-edit-btn').addEventListener('click', openLibrary);
+document.getElementById('library-close').addEventListener('click', closeLibrary);
+document.getElementById('food-add-btn').addEventListener('click', () => openFoodForm(null));
+document.getElementById('food-form-cancel').addEventListener('click', closeFoodForm);
+document.getElementById('food-form-save').addEventListener('click', saveFoodForm);
+document.getElementById('food-form-overlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('food-form-overlay')) closeFoodForm();
+});
+
 // ============ INIT ============
 load();
 renderAll();
+renderFoodChips();
 </script>
 
 </body>

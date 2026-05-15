@@ -1,4 +1,4 @@
-const CACHE_NAME = 'k70-v4';
+const CACHE_NAME = 'k70-v5';
 const ASSETS = [
   './',
   './index.html',
