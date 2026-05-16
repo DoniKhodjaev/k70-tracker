@@ -878,6 +878,79 @@ button { cursor: pointer; }
   display: inline-block;
 }
 
+/* Tabs */
+.app[data-active-tab="today"] > [data-tab]:not([data-tab="today"]),
+.app[data-active-tab="progress"] > [data-tab]:not([data-tab="progress"]),
+.app[data-active-tab="awards"] > [data-tab]:not([data-tab="awards"]),
+.app[data-active-tab="measurements"] > [data-tab]:not([data-tab="measurements"]) {
+  display: none !important;
+}
+
+/* Measurements tab — intro callout (inline, not modal) */
+.m-intro {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--cream-2);
+  background: rgba(212, 184, 134, 0.06);
+  border: 0.5px solid rgba(212, 184, 134, 0.18);
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  margin-top: 0.5rem;
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10, 25, 41, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 0.5px solid var(--border-1);
+  padding: 0.4rem 0 calc(0.4rem + var(--safe-bottom));
+  display: flex;
+  z-index: 100;
+  max-width: 520px;
+  margin: 0 auto;
+}
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.2rem;
+  background: transparent;
+  border: none;
+  color: var(--cream-3);
+  font-family: inherit;
+  transition: color 0.3s var(--ease);
+}
+.nav-btn.active {
+  color: var(--cream);
+}
+.nav-btn.active .nav-label {
+  color: var(--gold);
+}
+.nav-btn:active {
+  opacity: 0.7;
+}
+.nav-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cream-3);
+}
+.nav-btn.active .nav-label {
+  color: var(--gold);
+}
+.ic-lg { width: 20px; height: 20px; stroke-width: 1.5; }
+
+/* App needs extra bottom padding for nav */
+.app { padding-bottom: 5.5rem !important; }
+
 /* Toast */
 .toast {
   position: fixed; bottom: calc(1.5rem + var(--safe-bottom));
@@ -982,7 +1055,7 @@ button { cursor: pointer; }
   </header>
 
   <!-- Date navigator -->
-  <div class="date-nav">
+  <div class="date-nav" data-tab="today">
     <button class="date-arrow" id="prev-day" aria-label="Предыдущий день">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
@@ -996,7 +1069,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Weight -->
-  <div class="card" id="card-weight">
+  <div class="card" id="card-weight" data-tab="today">
     <div class="card-label">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 17l-8.5-8.5-5 5L2 7"/><path d="M16 17h6v-6"/></svg>
       Вес
@@ -1014,7 +1087,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Calories -->
-  <div class="card" id="card-calories">
+  <div class="card" id="card-calories" data-tab="today">
     <div class="card-header">
       <div class="card-label">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8.5 14.5A2.5 2.5 0 0011 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 11-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 002.5 2.5z"/></svg>
@@ -1036,7 +1109,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Food quick-add chips -->
-  <div class="foods-section">
+  <div class="foods-section" data-tab="today">
     <div class="foods-header">
       <div class="foods-label">Часто</div>
       <button class="foods-edit" id="foods-edit-btn">библиотека</button>
@@ -1045,7 +1118,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Water -->
-  <div class="card" id="card-water">
+  <div class="card" id="card-water" data-tab="today">
     <div class="card-header">
       <div class="card-label">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
@@ -1057,7 +1130,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Steps -->
-  <div class="card" id="card-steps">
+  <div class="card" id="card-steps" data-tab="today">
     <div class="card-header">
       <div class="card-label">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M13 4v16M17 4v16M3 8h4M3 12h4M3 16h4"/></svg>
@@ -1072,7 +1145,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Workout -->
-  <div class="card" id="card-workout">
+  <div class="card" id="card-workout" data-tab="today">
     <div class="card-label">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6.5 6.5L3 10l4 4-3.5 3.5M17.5 17.5l3.5-3.5-4-4 3.5-3.5M14 7l3 3M7 14l3 3"/></svg>
       Тренировка
@@ -1086,7 +1159,7 @@ button { cursor: pointer; }
   </div>
 
   <!-- Wellness: sleep + mood + energy -->
-  <div class="card" id="card-wellness">
+  <div class="card" id="card-wellness" data-tab="today">
     <div class="card-label">Самочувствие</div>
     <div class="wellness-row">
       <div class="wellness-label">Сон</div>
@@ -1124,13 +1197,13 @@ button { cursor: pointer; }
   </div>
 
   <!-- Notes -->
-  <div class="card" id="card-notes">
+  <div class="card" id="card-notes" data-tab="today">
     <div class="card-label">Заметка</div>
     <textarea class="notes-input" id="input-notes" placeholder="как самочувствие, что съел не по плану, как прошла тренировка"></textarea>
   </div>
 
   <!-- Chart -->
-  <div id="chart-section" style="display:none">
+  <div id="chart-section" data-tab="progress" style="display:none">
     <div class="section-label">Динамика веса</div>
     <div class="chart-wrap">
       <svg id="chart" viewBox="0 0 320 160" preserveAspectRatio="none"></svg>
@@ -1138,8 +1211,8 @@ button { cursor: pointer; }
   </div>
 
   <!-- Stats -->
-  <div class="section-label">Сводка</div>
-  <div class="stats-grid">
+  <div class="section-label" data-tab="progress">Сводка</div>
+  <div class="stats-grid" data-tab="progress">
     <div class="stat-card">
       <div class="stat-value" id="stat-tot-lost">0<span class="stat-unit">кг</span></div>
       <div class="stat-label">сброшено</div>
@@ -1155,14 +1228,14 @@ button { cursor: pointer; }
   </div>
 
   <!-- Projection -->
-  <div id="projection" class="projection" style="display:none">
+  <div id="projection" class="projection" data-tab="progress" style="display:none">
     <div class="projection-label">прогноз</div>
     <div class="projection-text" id="projection-text"></div>
   </div>
 
   <!-- Level -->
-  <div class="section-label">Уровень</div>
-  <div class="level-card" id="level-card">
+  <div class="section-label" data-tab="awards">Уровень</div>
+  <div class="level-card" id="level-card" data-tab="awards">
     <div class="level-roman" id="level-roman">I</div>
     <div class="level-info">
       <div class="level-name" id="level-name">На старте</div>
@@ -1174,12 +1247,12 @@ button { cursor: pointer; }
   </div>
 
   <!-- Badges -->
-  <div class="section-label">Достижения <span id="badges-count" class="section-meta"></span></div>
-  <div class="badges-grid" id="badges-grid"></div>
+  <div class="section-label" data-tab="awards">Достижения <span id="badges-count" class="section-meta"></span></div>
+  <div class="badges-grid" id="badges-grid" data-tab="awards"></div>
 
   <!-- Heatmap -->
-  <div class="section-label">Активность за год</div>
-  <div class="heatmap-wrap">
+  <div class="section-label" data-tab="progress">Активность за год</div>
+  <div class="heatmap-wrap" data-tab="progress">
     <svg id="heatmap" viewBox="0 0 320 90" preserveAspectRatio="xMidYMid meet"></svg>
     <div class="heatmap-legend">
       <span>меньше</span>
@@ -1194,21 +1267,92 @@ button { cursor: pointer; }
     </div>
   </div>
 
-  <!-- Measurements button -->
-  <button class="measurements-btn" id="measurements-btn">Замеры тела →</button>
-
   <!-- History -->
-  <div class="section-label">
+  <div class="section-label" data-tab="today">
     История
     <button class="section-action" id="toggle-history">все дни</button>
   </div>
-  <div class="history" id="history"></div>
+  <div class="history" id="history" data-tab="today"></div>
 
   <!-- Export -->
-  <button class="export-btn" id="export-btn">скопировать данные в буфер</button>
+  <button class="export-btn" id="export-btn" data-tab="today">скопировать данные в буфер</button>
+
+  <!-- Measurements tab content -->
+  <div data-tab="measurements" class="m-intro">
+    Замеряй раз в неделю, утром натощак. Лента-сантиметр, без втягивания живота. Замеры показывают то, что не видно по весам — мышцы растут, жир уходит.
+  </div>
+
+  <div id="measurements-chart-section" data-tab="measurements" style="display:none">
+    <div class="section-label" style="margin-top:1.5rem">Динамика</div>
+    <div class="chart-wrap">
+      <svg id="measurements-chart" viewBox="0 0 320 160" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="measurements-legend" id="measurements-legend"></div>
+  </div>
+
+  <div class="section-label" data-tab="measurements" style="margin-top:1.5rem">Новый замер</div>
+  <div class="measurement-form" data-tab="measurements">
+    <div class="m-date-row">
+      <input type="date" class="m-date-input" id="m-date">
+    </div>
+    <div class="m-grid">
+      <div class="m-field">
+        <label class="m-label">Талия</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-waist" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Бёдра</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-hips" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Грудь</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-chest" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Плечи</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-shoulders" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+    </div>
+    <button class="food-add-btn" id="m-save-btn">сохранить замер</button>
+  </div>
+
+  <div class="section-label" data-tab="measurements" style="margin-top:1.5rem">История замеров</div>
+  <div class="food-list" id="measurements-list" data-tab="measurements"></div>
 
   <div class="footer">offline · pwa · данные на устройстве</div>
 </div>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-nav="today" aria-label="Сегодня">
+    <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    <span class="nav-label">Сегодня</span>
+  </button>
+  <button class="nav-btn" data-nav="progress" aria-label="Прогресс">
+    <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 3v18h18M7 15l4-4 4 4 6-6"/></svg>
+    <span class="nav-label">Прогресс</span>
+  </button>
+  <button class="nav-btn" data-nav="awards" aria-label="Награды">
+    <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="6"/><path d="M15.5 13l-1 8L12 19l-2.5 2-1-8"/></svg>
+    <span class="nav-label">Награды</span>
+  </button>
+  <button class="nav-btn" data-nav="measurements" aria-label="Замеры">
+    <svg class="ic-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 7l-7 7-3-3-7 7M14 7h7v7"/></svg>
+    <span class="nav-label">Замеры</span>
+  </button>
+</nav>
 
 <!-- Install banner -->
 <div class="install-banner" id="install-banner">
@@ -1248,69 +1392,6 @@ button { cursor: pointer; }
       <button class="food-form-btn food-form-save" id="food-form-save">сохранить</button>
     </div>
   </div>
-</div>
-
-<!-- Measurements modal -->
-<div class="library-modal" id="measurements-modal">
-  <div class="modal-header">
-    <button class="modal-back" id="measurements-close" aria-label="Назад">
-      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    </button>
-    <h2 class="modal-title">Замеры тела</h2>
-  </div>
-
-  <div class="measurements-intro">
-    Замеряй раз в неделю, утром натощак. Лента-сантиметр, без втягивания живота. Замеры показывают то, что не видно по весам — мышцы растут, жир уходит.
-  </div>
-
-  <div id="measurements-chart-section" style="display:none">
-    <div class="section-label" style="margin-top:1.5rem">Динамика</div>
-    <div class="chart-wrap">
-      <svg id="measurements-chart" viewBox="0 0 320 160" preserveAspectRatio="none"></svg>
-    </div>
-    <div class="measurements-legend" id="measurements-legend"></div>
-  </div>
-
-  <div class="section-label" style="margin-top:1.5rem">Новый замер</div>
-  <div class="measurement-form">
-    <div class="m-date-row">
-      <input type="date" class="m-date-input" id="m-date">
-    </div>
-    <div class="m-grid">
-      <div class="m-field">
-        <label class="m-label">Талия</label>
-        <div class="m-input-row">
-          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-waist" placeholder="—">
-          <span class="m-unit">см</span>
-        </div>
-      </div>
-      <div class="m-field">
-        <label class="m-label">Бёдра</label>
-        <div class="m-input-row">
-          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-hips" placeholder="—">
-          <span class="m-unit">см</span>
-        </div>
-      </div>
-      <div class="m-field">
-        <label class="m-label">Грудь</label>
-        <div class="m-input-row">
-          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-chest" placeholder="—">
-          <span class="m-unit">см</span>
-        </div>
-      </div>
-      <div class="m-field">
-        <label class="m-label">Плечи</label>
-        <div class="m-input-row">
-          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-shoulders" placeholder="—">
-          <span class="m-unit">см</span>
-        </div>
-      </div>
-    </div>
-    <button class="food-add-btn" id="m-save-btn">сохранить замер</button>
-  </div>
-
-  <div class="section-label" style="margin-top:1.5rem">История замеров</div>
-  <div class="food-list" id="measurements-list"></div>
 </div>
 
 <!-- Toast -->
@@ -2192,19 +2273,12 @@ const M_COLORS = {
   shoulders: '#B8B5AC',
 };
 
-function openMeasurements() {
-  // Default date — today
+function initMeasurementsTab() {
   const today = dateKey(new Date());
-  editingMeasurementDate = null;
-  document.getElementById('m-date').value = today;
-  M_FIELDS.forEach(f => document.getElementById('m-' + f).value = '');
+  const dateEl = document.getElementById('m-date');
+  if (dateEl && !dateEl.value) dateEl.value = today;
   renderMeasurementsChart();
   renderMeasurementsList();
-  document.getElementById('measurements-modal').classList.add('show');
-}
-
-function closeMeasurements() {
-  document.getElementById('measurements-modal').classList.remove('show');
 }
 
 function saveMeasurement() {
@@ -2331,9 +2405,25 @@ function renderMeasurementsList() {
   });
 }
 
-document.getElementById('measurements-btn').addEventListener('click', openMeasurements);
-document.getElementById('measurements-close').addEventListener('click', closeMeasurements);
 document.getElementById('m-save-btn').addEventListener('click', saveMeasurement);
+
+// ============ TAB SWITCHING ============
+const appEl = document.querySelector('.app');
+appEl.dataset.activeTab = 'today';
+
+function switchTab(tabName) {
+  appEl.dataset.activeTab = tabName;
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.nav === tabName);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  vibrate(8);
+  if (tabName === 'measurements') initMeasurementsTab();
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.nav));
+});
 
 // ============ INIT ============
 load();
