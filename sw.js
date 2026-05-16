@@ -1,7 +1,8 @@
-const CACHE_NAME = 'k70-v7';
+const CACHE_NAME = 'k70-v8';
 const ASSETS = [
   './',
   './index.html',
+  './viewer.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',

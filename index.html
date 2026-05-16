@@ -951,6 +951,157 @@ button { cursor: pointer; }
 /* App needs extra bottom padding for nav */
 .app { padding-bottom: 5.5rem !important; }
 
+/* Morning ritual card */
+.ritual-card {
+  background: rgba(212, 184, 134, 0.05);
+  border-color: rgba(212, 184, 134, 0.2);
+}
+.ritual-step {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.65rem 0;
+  border-bottom: 0.5px solid rgba(245, 239, 230, 0.06);
+  transition: opacity 0.3s var(--ease);
+}
+.ritual-step:last-child { border-bottom: none; }
+.ritual-step.done { opacity: 0.45; }
+.ritual-step.done .ritual-text { text-decoration: line-through; text-decoration-color: var(--cream-3); }
+.ritual-check {
+  width: 22px; height: 22px;
+  border: 0.5px solid var(--border-2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: transparent;
+  transition: all 0.3s var(--ease);
+}
+.ritual-step.done .ritual-check {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy-deep);
+}
+.ritual-text {
+  font-size: 0.9rem;
+  color: var(--cream);
+  font-weight: 300;
+}
+
+/* Extras */
+.extras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.extra-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  text-align: left;
+  color: var(--cream);
+  font-family: inherit;
+  transition: all 0.3s var(--ease);
+}
+.extra-btn:active {
+  background: var(--surface-2);
+  transform: scale(0.99);
+}
+.extra-icon {
+  width: 38px; height: 38px;
+  background: rgba(245, 239, 230, 0.04);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cream-2);
+  flex-shrink: 0;
+}
+.extra-text { flex: 1; min-width: 0; }
+.extra-title {
+  font-size: 0.82rem;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+  font-weight: 400;
+}
+.extra-sub {
+  font-size: 0.62rem;
+  color: var(--cream-3);
+  letter-spacing: 0.05em;
+}
+.extra-btn.active .extra-icon {
+  background: rgba(212, 184, 134, 0.15);
+  border-color: rgba(212, 184, 134, 0.4);
+  color: var(--gold);
+}
+.extra-btn.active .extra-sub { color: var(--gold); }
+
+/* Lock screen */
+.lock-screen {
+  position: fixed; inset: 0;
+  background: radial-gradient(ellipse at top, var(--navy) 0%, var(--navy-deep) 60%, var(--navy-darker) 100%);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.lock-screen.show { display: flex; animation: fadeIn 0.3s var(--ease); }
+.lock-content {
+  text-align: center;
+  max-width: 320px;
+}
+.lock-icon-wrap {
+  margin: 2.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+.lock-icon-svg {
+  width: 36px; height: 36px;
+  color: var(--cream-2);
+  opacity: 0.5;
+}
+.lock-unlock-btn {
+  padding: 1rem 2.5rem;
+  background: var(--cream);
+  color: var(--navy-deep);
+  border: none;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-family: inherit;
+  font-weight: 500;
+}
+.lock-reset-btn {
+  display: block;
+  margin: 1.5rem auto 0;
+  background: transparent;
+  border: none;
+  color: var(--cream-3);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-family: inherit;
+  padding: 0.5rem 1rem;
+}
+
+/* PDF report (hidden, used for generation) */
+.pdf-report {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+  width: 595px; /* A4 width @ 72dpi */
+  background: #0A1929;
+  color: #F5EFE6;
+  padding: 40px;
+  font-family: 'Inter', sans-serif;
+}
+
 /* Toast */
 .toast {
   position: fixed; bottom: calc(1.5rem + var(--safe-bottom));
@@ -1066,6 +1217,29 @@ button { cursor: pointer; }
     <button class="date-arrow" id="next-day" aria-label="Следующий день">
       <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6"/></svg>
     </button>
+  </div>
+
+  <!-- Morning ritual (habit stacking) -->
+  <div class="card ritual-card" id="card-ritual" data-tab="today">
+    <div class="card-label">Утренний ритуал</div>
+    <div class="ritual-step" data-step="namaz">
+      <div class="ritual-check">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div class="ritual-text">Утренний намаз</div>
+    </div>
+    <div class="ritual-step" data-step="weight">
+      <div class="ritual-check">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div class="ritual-text">Взвешивание</div>
+    </div>
+    <div class="ritual-step" data-step="log">
+      <div class="ritual-check">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+      </div>
+      <div class="ritual-text">Запись утра</div>
+    </div>
   </div>
 
   <!-- Weight -->
@@ -1267,6 +1441,38 @@ button { cursor: pointer; }
     </div>
   </div>
 
+  <!-- Extras: PDF / share / lock -->
+  <div class="section-label" data-tab="progress">Дополнительно</div>
+  <div class="extras-list" data-tab="progress">
+    <button class="extra-btn" id="pdf-btn">
+      <div class="extra-icon">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l3 3 3-3M12 18V9"/></svg>
+      </div>
+      <div class="extra-text">
+        <div class="extra-title">Скачать месячный отчёт</div>
+        <div class="extra-sub">PDF за последние 30 дней</div>
+      </div>
+    </button>
+    <button class="extra-btn" id="share-btn">
+      <div class="extra-icon">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/></svg>
+      </div>
+      <div class="extra-text">
+        <div class="extra-title">Поделиться с женой</div>
+        <div class="extra-sub">Ссылка только для чтения, без бэкенда</div>
+      </div>
+    </button>
+    <button class="extra-btn" id="lock-btn">
+      <div class="extra-icon">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <div class="extra-text">
+        <div class="extra-title">Замок Face ID</div>
+        <div class="extra-sub" id="lock-status">не активирован</div>
+      </div>
+    </button>
+  </div>
+
   <!-- History -->
   <div class="section-label" data-tab="today">
     История
@@ -1353,6 +1559,23 @@ button { cursor: pointer; }
     <span class="nav-label">Замеры</span>
   </button>
 </nav>
+
+<!-- Lock screen overlay -->
+<div class="lock-screen" id="lock-screen">
+  <div class="lock-content">
+    <div class="brand" style="font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--cream-3);margin-bottom:1rem">персональный трекер</div>
+    <h1 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.5rem;margin:0;letter-spacing:0.01em">Дорога к 70</h1>
+    <div style="width:32px;height:0.5px;background:var(--cream-2);margin:1rem auto;opacity:0.4"></div>
+    <div class="lock-icon-wrap">
+      <svg class="lock-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="11" width="18" height="11" rx="2"/>
+        <path d="M7 11V7a5 5 0 0110 0v4"/>
+      </svg>
+    </div>
+    <button class="lock-unlock-btn" id="lock-unlock-btn">Разблокировать</button>
+    <button class="lock-reset-btn" id="lock-reset-btn" style="display:none">Сбросить замок</button>
+  </div>
+</div>
 
 <!-- Install banner -->
 <div class="install-banner" id="install-banner">
@@ -1789,6 +2012,7 @@ function renderAll() {
   renderHeader();
   renderDateNav();
   renderInputs();
+  renderRitual();
   renderChart();
   renderStats();
   renderLevel();
@@ -2425,10 +2649,444 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => switchTab(btn.dataset.nav));
 });
 
+// ============ MORNING RITUAL ============
+function renderRitual() {
+  const card = document.getElementById('card-ritual');
+  if (!card) return;
+  const e = getEntry(state.currentDate);
+  const isToday = state.currentDate === dateKey(new Date());
+
+  const namazDone = !!e.namaz;
+  const weightDone = !!e.weight;
+  const logDone = !!(e.water || e.mood || e.energy || e.notes || e.sleep);
+  const allDone = namazDone && weightDone && logDone;
+
+  if (!isToday || allDone) {
+    card.style.display = 'none';
+    return;
+  }
+  card.style.display = '';
+
+  card.querySelectorAll('.ritual-step').forEach(step => {
+    const sname = step.dataset.step;
+    const done = sname === 'namaz' ? namazDone : sname === 'weight' ? weightDone : logDone;
+    step.classList.toggle('done', done);
+  });
+}
+
+document.querySelectorAll('.ritual-step').forEach(step => {
+  step.addEventListener('click', () => {
+    const sname = step.dataset.step;
+    const e = getEntry(state.currentDate);
+    if (sname === 'namaz') {
+      setEntry(state.currentDate, 'namaz', e.namaz ? '' : '1');
+      vibrate(10);
+      renderRitual();
+      renderHistory();
+    } else if (sname === 'weight') {
+      const input = document.getElementById('input-weight');
+      input.focus();
+      window.scrollTo({
+        top: document.getElementById('card-weight').offsetTop - 100,
+        behavior: 'smooth'
+      });
+    } else if (sname === 'log') {
+      window.scrollTo({
+        top: document.getElementById('card-wellness').offsetTop - 100,
+        behavior: 'smooth'
+      });
+    }
+  });
+});
+
+// ============ SHARE / COUPLE MODE ============
+function buildShareData() {
+  const dates = Object.keys(state.entries).sort();
+  const wEntries = dates
+    .filter(d => state.entries[d].weight)
+    .map(d => ({ d: d, w: parseFloat(state.entries[d].weight) }));
+  const recent = wEntries.slice(-30);
+
+  const agg = computeAggregateStats();
+  const level = Math.min(10, Math.floor(agg.totalLost / LEVEL_STEP) + 1);
+
+  const earnedBadges = BADGES.filter(b => b.check(agg)).map(b => b.name);
+
+  return {
+    name: 'Doniyor',
+    w: wEntries.length ? wEntries[wEntries.length - 1].w : null,
+    lost: agg.totalLost,
+    streak: agg.maxStreak,
+    level: level,
+    h: recent,
+    b: earnedBadges,
+    target: TARGETS.weight,
+    start: TARGETS.startWeight,
+    u: new Date().toISOString(),
+  };
+}
+
+function encodeForUrl(obj) {
+  const json = JSON.stringify(obj);
+  const bytes = new TextEncoder().encode(json);
+  let binStr = '';
+  for (let i = 0; i < bytes.length; i++) binStr += String.fromCharCode(bytes[i]);
+  let b64 = btoa(binStr);
+  // URL-safe
+  return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+async function shareProgress() {
+  const data = buildShareData();
+  const encoded = encodeForUrl(data);
+  const url = `${location.origin}${location.pathname.replace(/index\.html$/, '')}viewer.html#${encoded}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'Дорога к 70',
+        text: 'Мой прогресс',
+        url: url,
+      });
+      return;
+    } catch (e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('ссылка скопирована');
+  } catch (e) {
+    prompt('Скопируй ссылку:', url);
+  }
+}
+
+document.getElementById('share-btn').addEventListener('click', shareProgress);
+
+// ============ PDF REPORT ============
+async function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) return resolve();
+    const s = document.createElement('script');
+    s.src = src;
+    s.onload = resolve;
+    s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+function buildReportHtml() {
+  const today = new Date();
+  const monthAgo = new Date(today);
+  monthAgo.setDate(monthAgo.getDate() - 29);
+  const fromKey = dateKey(monthAgo);
+  const toKey = dateKey(today);
+
+  const dates = Object.keys(state.entries).sort().filter(d => d >= fromKey && d <= toKey);
+
+  const wEntries = dates
+    .filter(d => state.entries[d].weight)
+    .map(d => ({ d: d, w: parseFloat(state.entries[d].weight) }));
+
+  const calVals = dates.map(d => parseInt(state.entries[d].calories)).filter(v => !isNaN(v));
+  const stepsVals = dates.map(d => parseInt(state.entries[d].steps)).filter(v => !isNaN(v));
+  const workoutCount = dates.filter(d => state.entries[d].workout && state.entries[d].workout !== 'none').length;
+
+  const startW = wEntries.length ? wEntries[0].w : null;
+  const endW = wEntries.length ? wEntries[wEntries.length - 1].w : null;
+  const lostMonth = startW !== null && endW !== null ? Math.max(0, startW - endW) : 0;
+
+  const avgCal = calVals.length ? Math.round(calVals.reduce((a, b) => a + b, 0) / calVals.length) : 0;
+  const avgSteps = stepsVals.length ? Math.round(stepsVals.reduce((a, b) => a + b, 0) / stepsVals.length) : 0;
+
+  const agg = computeAggregateStats();
+  const level = Math.min(10, Math.floor(agg.totalLost / LEVEL_STEP) + 1);
+  const earnedBadges = BADGES.filter(b => b.check(agg));
+
+  // Замеры
+  const mDates = Object.keys(state.measurements).sort().filter(d => d >= fromKey && d <= toKey);
+  let mDeltaHtml = '';
+  if (mDates.length >= 2) {
+    const first = state.measurements[mDates[0]];
+    const last = state.measurements[mDates[mDates.length - 1]];
+    M_FIELDS.forEach(f => {
+      if (first[f] && last[f]) {
+        const delta = last[f] - first[f];
+        const sign = delta > 0 ? '+' : '';
+        mDeltaHtml += `<div style="margin:4px 0">${M_LABELS[f]}: ${first[f]} → ${last[f]} см (${sign}${delta.toFixed(1)})</div>`;
+      }
+    });
+  }
+
+  // Sparkline SVG
+  let chartHtml = '';
+  if (wEntries.length >= 2) {
+    const W = 480, H = 140, padX = 25, padY = 18;
+    let minV = TARGETS.weight - 1, maxV = TARGETS.startWeight + 1;
+    wEntries.forEach(p => { if (p.w < minV) minV = p.w; if (p.w > maxV) maxV = p.w; });
+    const range = maxV - minV || 1;
+    const xs = (W - padX * 2) / (wEntries.length - 1);
+    const yFor = (v) => H - padY - ((v - minV) / range) * (H - padY * 2);
+    const ty = yFor(TARGETS.weight);
+    const path = wEntries.map((p, i) => `${i === 0 ? 'M' : 'L'} ${(padX + i * xs).toFixed(1)},${yFor(p.w).toFixed(1)}`).join(' ');
+    chartHtml = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;margin:20px 0">
+      <line x1="${padX}" y1="${ty}" x2="${W - padX}" y2="${ty}" stroke="#D4B886" stroke-width="0.5" stroke-dasharray="3,4"/>
+      <text x="${W - padX}" y="${ty - 6}" fill="#D4B886" font-size="9" text-anchor="end" font-family="Inter">ЦЕЛЬ ${TARGETS.weight}</text>
+      <path d="${path}" fill="none" stroke="#F5EFE6" stroke-width="1.5"/>
+      ${wEntries.map((p, i) => `<circle cx="${(padX + i * xs).toFixed(1)}" cy="${yFor(p.w).toFixed(1)}" r="${i === wEntries.length - 1 ? 3 : 1.8}" fill="${i === wEntries.length - 1 ? '#D4B886' : '#F5EFE6'}"/>`).join('')}
+    </svg>`;
+  }
+
+  const formatRange = (k) => {
+    const d = dateFromKey(k);
+    const months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+    return `${d.getDate()} ${months[d.getMonth()]}`;
+  };
+
+  return `<div class="pdf-report" id="pdf-report-content">
+    <div style="text-align:center;margin-bottom:30px;padding-bottom:20px;border-bottom:0.5px solid rgba(245,239,230,0.2)">
+      <div style="font-size:9px;letter-spacing:3px;color:#8A8780;text-transform:uppercase;margin-bottom:8px">месячный отчёт</div>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:30px;margin:0;letter-spacing:1px">Дорога к 70</h1>
+      <div style="font-size:11px;color:#B8B5AC;margin-top:8px">${formatRange(fromKey)} – ${formatRange(toKey)} 2026</div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-bottom:25px">
+      <div style="flex:1;background:rgba(245,239,230,0.04);border:0.5px solid rgba(245,239,230,0.15);padding:14px;border-radius:2px;text-align:center">
+        <div style="font-size:8px;letter-spacing:2px;color:#8A8780;text-transform:uppercase">Сейчас</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#F5EFE6;margin-top:6px">${endW ? endW.toFixed(1) : '—'} <span style="font-size:9px;letter-spacing:1.5px;color:#8A8780;text-transform:uppercase">кг</span></div>
+      </div>
+      <div style="flex:1;background:rgba(245,239,230,0.04);border:0.5px solid rgba(245,239,230,0.15);padding:14px;border-radius:2px;text-align:center">
+        <div style="font-size:8px;letter-spacing:2px;color:#8A8780;text-transform:uppercase">За месяц</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#D4B886;margin-top:6px">−${lostMonth.toFixed(1)} <span style="font-size:9px;letter-spacing:1.5px;color:#8A8780;text-transform:uppercase">кг</span></div>
+      </div>
+      <div style="flex:1;background:rgba(245,239,230,0.04);border:0.5px solid rgba(245,239,230,0.15);padding:14px;border-radius:2px;text-align:center">
+        <div style="font-size:8px;letter-spacing:2px;color:#8A8780;text-transform:uppercase">Всего</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#D4B886;margin-top:6px">−${agg.totalLost.toFixed(1)} <span style="font-size:9px;letter-spacing:1.5px;color:#8A8780;text-transform:uppercase">кг</span></div>
+      </div>
+    </div>
+
+    <div style="font-size:9px;letter-spacing:3px;color:#8A8780;text-transform:uppercase;margin:20px 0 8px">Динамика веса</div>
+    ${chartHtml || '<div style="color:#8A8780;font-size:11px">недостаточно данных</div>'}
+
+    <div style="font-size:9px;letter-spacing:3px;color:#8A8780;text-transform:uppercase;margin:25px 0 8px">Активность</div>
+    <div style="font-size:11px;line-height:1.8;color:#F5EFE6">
+      <div>Дней с записями: ${dates.length} из 30</div>
+      <div>Тренировок выполнено: ${workoutCount}</div>
+      <div>Средние калории: ${avgCal || '—'} ккал/день</div>
+      <div>Средние шаги: ${avgSteps || '—'} шагов/день</div>
+      <div>Серия дней подряд: ${agg.maxStreak} дн</div>
+    </div>
+
+    ${mDeltaHtml ? `<div style="font-size:9px;letter-spacing:3px;color:#8A8780;text-transform:uppercase;margin:25px 0 8px">Замеры</div>
+    <div style="font-size:11px;line-height:1.6;color:#F5EFE6">${mDeltaHtml}</div>` : ''}
+
+    <div style="font-size:9px;letter-spacing:3px;color:#8A8780;text-transform:uppercase;margin:25px 0 8px">Уровень и достижения</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:18px;color:#D4B886">${ROMAN[level-1]} · ${LEVEL_NAMES[level-1]}</div>
+    ${earnedBadges.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">${earnedBadges.map(b => `<span style="padding:5px 10px;background:rgba(212,184,134,0.12);border:0.5px solid rgba(212,184,134,0.3);border-radius:2px;font-size:9px;color:#D4B886">${b.name}</span>`).join('')}</div>` : ''}
+
+    <div style="margin-top:35px;padding-top:15px;border-top:0.5px solid rgba(245,239,230,0.15);text-align:center;font-size:8px;letter-spacing:3px;color:rgba(184,181,172,0.4);text-transform:uppercase">
+      сгенерировано ${today.toLocaleDateString('ru')} · k70-tracker
+    </div>
+  </div>`;
+}
+
+async function downloadReport() {
+  showToast('готовлю отчёт');
+  const btn = document.getElementById('pdf-btn');
+  btn.style.pointerEvents = 'none';
+
+  try {
+    if (!window.html2pdf) {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js');
+    }
+    const container = document.createElement('div');
+    container.innerHTML = buildReportHtml();
+    document.body.appendChild(container);
+    const element = container.firstElementChild;
+
+    await html2pdf().set({
+      margin: 0,
+      filename: `k70-report-${dateKey(new Date())}.pdf`,
+      image: { type: 'jpeg', quality: 0.95 },
+      html2canvas: { scale: 2, backgroundColor: '#0A1929' },
+      jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
+    }).from(element).save();
+
+    container.remove();
+    showToast('отчёт сохранён');
+  } catch (e) {
+    console.error(e);
+    showToast('не удалось');
+  } finally {
+    btn.style.pointerEvents = '';
+  }
+}
+
+document.getElementById('pdf-btn').addEventListener('click', downloadReport);
+
+// ============ APP LOCK (WebAuthn / Face ID) ============
+const LOCK_FLAG = 'k70-lock-enabled';
+const LOCK_CRED = 'k70-lock-cred';
+let unlockAttempts = 0;
+
+async function isPlatformAuthAvailable() {
+  if (!window.PublicKeyCredential) return false;
+  try {
+    return await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+  } catch (e) { return false; }
+}
+
+function isLockEnabled() {
+  return localStorage.getItem(LOCK_FLAG) === '1' && !!localStorage.getItem(LOCK_CRED);
+}
+
+function renderLockStatus() {
+  const sub = document.getElementById('lock-status');
+  const btn = document.getElementById('lock-btn');
+  if (isLockEnabled()) {
+    sub.textContent = 'защищено · тап чтобы выключить';
+    btn.classList.add('active');
+  } else {
+    sub.textContent = 'не активирован';
+    btn.classList.remove('active');
+  }
+}
+
+function bytesToB64(arr) {
+  let s = '';
+  const bytes = new Uint8Array(arr);
+  for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]);
+  return btoa(s);
+}
+
+function b64ToBytes(b64) {
+  const s = atob(b64);
+  const arr = new Uint8Array(s.length);
+  for (let i = 0; i < s.length; i++) arr[i] = s.charCodeAt(i);
+  return arr;
+}
+
+async function enableLock() {
+  if (!await isPlatformAuthAvailable()) {
+    showToast('Face ID не доступен');
+    return;
+  }
+  try {
+    const challenge = new Uint8Array(32);
+    crypto.getRandomValues(challenge);
+    const userId = new Uint8Array(16);
+    crypto.getRandomValues(userId);
+
+    const cred = await navigator.credentials.create({
+      publicKey: {
+        challenge: challenge,
+        rp: { name: 'Дорога к 70' },
+        user: {
+          id: userId,
+          name: 'k70',
+          displayName: 'Дорога к 70',
+        },
+        pubKeyCredParams: [
+          { alg: -7, type: 'public-key' },
+          { alg: -257, type: 'public-key' },
+        ],
+        authenticatorSelection: {
+          authenticatorAttachment: 'platform',
+          userVerification: 'required',
+        },
+        timeout: 60000,
+        attestation: 'none',
+      }
+    });
+
+    localStorage.setItem(LOCK_CRED, bytesToB64(cred.rawId));
+    localStorage.setItem(LOCK_FLAG, '1');
+    showToast('Face ID активирован');
+    renderLockStatus();
+  } catch (e) {
+    console.error(e);
+    showToast(e.name === 'NotAllowedError' ? 'отменено' : 'не удалось');
+  }
+}
+
+async function verifyLock() {
+  const idB64 = localStorage.getItem(LOCK_CRED);
+  if (!idB64) return false;
+  try {
+    const challenge = new Uint8Array(32);
+    crypto.getRandomValues(challenge);
+    await navigator.credentials.get({
+      publicKey: {
+        challenge: challenge,
+        allowCredentials: [{
+          id: b64ToBytes(idB64),
+          type: 'public-key',
+        }],
+        userVerification: 'required',
+        timeout: 60000,
+      }
+    });
+    return true;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
+}
+
+async function disableLock() {
+  const ok = await verifyLock();
+  if (ok) {
+    localStorage.removeItem(LOCK_FLAG);
+    localStorage.removeItem(LOCK_CRED);
+    showToast('замок снят');
+    renderLockStatus();
+  } else {
+    showToast('не подтверждено');
+  }
+}
+
+document.getElementById('lock-btn').addEventListener('click', () => {
+  if (isLockEnabled()) {
+    disableLock();
+  } else {
+    enableLock();
+  }
+});
+
+async function tryUnlock() {
+  const ok = await verifyLock();
+  if (ok) {
+    document.getElementById('lock-screen').classList.remove('show');
+    unlockAttempts = 0;
+  } else {
+    unlockAttempts++;
+    showToast('не разблокировано');
+    if (unlockAttempts >= 3) {
+      document.getElementById('lock-reset-btn').style.display = 'block';
+    }
+  }
+}
+
+document.getElementById('lock-unlock-btn').addEventListener('click', tryUnlock);
+document.getElementById('lock-reset-btn').addEventListener('click', () => {
+  if (confirm('Сбросить замок? Данные останутся, но потеряешь биометрический ключ.')) {
+    localStorage.removeItem(LOCK_FLAG);
+    localStorage.removeItem(LOCK_CRED);
+    document.getElementById('lock-screen').classList.remove('show');
+    renderLockStatus();
+  }
+});
+
+// Show lock screen on app load if enabled
+if (isLockEnabled()) {
+  document.getElementById('lock-screen').classList.add('show');
+}
+
 // ============ INIT ============
 load();
 renderAll();
 renderFoodChips();
+renderLockStatus();
 </script>
 
 </body>
