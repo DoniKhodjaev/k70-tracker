@@ -575,6 +575,309 @@ button { cursor: pointer; }
   color: var(--cream-2);
 }
 
+/* Water cups */
+.water-cups {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: space-between;
+  margin-top: 0.4rem;
+}
+.water-cup {
+  flex: 1;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 0.5px solid var(--border-2);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.4s var(--ease);
+  padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cream-3);
+}
+.water-cup.filled {
+  background: var(--cream);
+  border-color: var(--cream);
+  color: var(--navy-deep);
+}
+.water-cup:active { transform: scale(0.92); }
+
+/* Wellness */
+#card-wellness .wellness-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 0.85rem;
+  gap: 0.6rem;
+}
+.wellness-label {
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--cream-3);
+}
+.wellness-stepper {
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.sleep-input {
+  width: 60px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--cream);
+  padding: 0;
+}
+.dots-scale {
+  display: flex;
+  gap: 0.45rem;
+}
+.dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: transparent;
+  border: 0.5px solid var(--border-2);
+  padding: 0;
+  transition: all 0.3s var(--ease);
+}
+.dot.active {
+  background: var(--cream);
+  border-color: var(--cream);
+}
+.dot.dim {
+  background: rgba(245, 239, 230, 0.4);
+  border-color: rgba(245, 239, 230, 0.4);
+}
+.dot:active { transform: scale(0.85); }
+
+/* Level card */
+.level-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.2rem 1.1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+}
+.level-roman {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem;
+  font-weight: 400;
+  color: var(--gold);
+  line-height: 1;
+  min-width: 50px;
+  text-align: center;
+}
+.level-info { flex: 1; min-width: 0; }
+.level-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--cream);
+  margin-bottom: 0.55rem;
+  line-height: 1.1;
+}
+.level-progress-bar {
+  height: 2px;
+  background: rgba(245, 239, 230, 0.1);
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.level-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  width: 0%;
+  transition: width 0.8s var(--ease);
+}
+.level-next {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-3);
+}
+
+/* Badges */
+.section-meta {
+  font-size: 0.6rem;
+  color: var(--cream-3);
+  margin-left: 0.5rem;
+  letter-spacing: 0.15em;
+  text-transform: none;
+}
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+.badge {
+  padding: 0.85rem 0.4rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  text-align: center;
+  opacity: 0.35;
+  transition: opacity 0.4s var(--ease);
+}
+.badge.earned {
+  opacity: 1;
+  border-color: rgba(212, 184, 134, 0.4);
+}
+.badge-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: var(--cream);
+  margin-bottom: 0.2rem;
+  line-height: 1.1;
+}
+.badge.earned .badge-name {
+  color: var(--gold);
+}
+.badge-desc {
+  font-size: 0.58rem;
+  color: var(--cream-3);
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+/* Heatmap */
+.heatmap-wrap {
+  padding: 1.25rem 0.5rem 1rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+}
+.heatmap-wrap svg { width: 100%; height: auto; display: block; }
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.7rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--cream-3);
+}
+.legend-dots { display: flex; gap: 3px; }
+.legend-dot {
+  width: 9px; height: 9px;
+  border-radius: 1px;
+  background: rgba(245, 239, 230, 0.08);
+}
+.legend-dot.l1 { background: rgba(245, 239, 230, 0.2); }
+.legend-dot.l2 { background: rgba(245, 239, 230, 0.4); }
+.legend-dot.l3 { background: rgba(245, 239, 230, 0.65); }
+.legend-dot.l4 { background: var(--gold); }
+
+/* Measurements button */
+.measurements-btn {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.95rem;
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--cream);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-family: inherit;
+  transition: all 0.3s var(--ease);
+}
+.measurements-btn:active {
+  background: var(--cream);
+  color: var(--navy-deep);
+  border-color: var(--cream);
+}
+
+/* Measurements modal contents */
+.measurements-intro {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--cream-2);
+  background: rgba(212, 184, 134, 0.06);
+  border: 0.5px solid rgba(212, 184, 134, 0.18);
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+}
+.measurement-form {
+  background: var(--surface-1);
+  border: 0.5px solid var(--border-1);
+  border-radius: 2px;
+  padding: 1.2rem 1rem;
+}
+.m-date-row { margin-bottom: 1rem; }
+.m-date-input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+  color: var(--cream);
+  font-size: 16px;
+  font-family: inherit;
+  color-scheme: dark;
+}
+.m-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.m-field {}
+.m-label {
+  display: block;
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-3);
+  margin-bottom: 0.4rem;
+}
+.m-input-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  padding: 0.5rem 0.7rem;
+  background: var(--surface-2);
+  border: 0.5px solid var(--border-2);
+  border-radius: 2px;
+}
+.m-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: var(--cream);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  padding: 0;
+  width: 100%;
+}
+.m-unit {
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-3);
+}
+.measurements-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  justify-content: center;
+  margin-top: 0.75rem;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.m-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.m-legend-swatch {
+  width: 12px; height: 2px;
+  display: inline-block;
+}
+
 /* Toast */
 .toast {
   position: fixed; bottom: calc(1.5rem + var(--safe-bottom));
@@ -741,6 +1044,18 @@ button { cursor: pointer; }
     <div class="foods-grid" id="foods-grid"></div>
   </div>
 
+  <!-- Water -->
+  <div class="card" id="card-water">
+    <div class="card-header">
+      <div class="card-label">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2.69l5.66 5.66a8 8 0 11-11.31 0z"/></svg>
+        Вода
+      </div>
+      <div class="card-target">цель 8 стаканов</div>
+    </div>
+    <div class="water-cups" id="water-cups"></div>
+  </div>
+
   <!-- Steps -->
   <div class="card" id="card-steps">
     <div class="card-header">
@@ -767,6 +1082,44 @@ button { cursor: pointer; }
       <button class="workout-btn" data-workout="A">A · ноги</button>
       <button class="workout-btn" data-workout="B">B · спина</button>
       <button class="workout-btn" data-workout="C">C · полное</button>
+    </div>
+  </div>
+
+  <!-- Wellness: sleep + mood + energy -->
+  <div class="card" id="card-wellness">
+    <div class="card-label">Самочувствие</div>
+    <div class="wellness-row">
+      <div class="wellness-label">Сон</div>
+      <div class="wellness-stepper">
+        <button class="step-btn" data-step="sleep" data-delta="-0.5" aria-label="Минус 30 мин">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 12h14"/></svg>
+        </button>
+        <input type="number" inputmode="decimal" step="0.5" class="sleep-input" id="input-sleep" placeholder="7.5">
+        <span class="unit">ч</span>
+        <button class="step-btn" data-step="sleep" data-delta="0.5" aria-label="Плюс 30 мин">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="wellness-row">
+      <div class="wellness-label">Настроение</div>
+      <div class="dots-scale" id="mood-scale" data-field="mood">
+        <button class="dot" data-value="1"></button>
+        <button class="dot" data-value="2"></button>
+        <button class="dot" data-value="3"></button>
+        <button class="dot" data-value="4"></button>
+        <button class="dot" data-value="5"></button>
+      </div>
+    </div>
+    <div class="wellness-row">
+      <div class="wellness-label">Энергия</div>
+      <div class="dots-scale" id="energy-scale" data-field="energy">
+        <button class="dot" data-value="1"></button>
+        <button class="dot" data-value="2"></button>
+        <button class="dot" data-value="3"></button>
+        <button class="dot" data-value="4"></button>
+        <button class="dot" data-value="5"></button>
+      </div>
     </div>
   </div>
 
@@ -806,6 +1159,43 @@ button { cursor: pointer; }
     <div class="projection-label">прогноз</div>
     <div class="projection-text" id="projection-text"></div>
   </div>
+
+  <!-- Level -->
+  <div class="section-label">Уровень</div>
+  <div class="level-card" id="level-card">
+    <div class="level-roman" id="level-roman">I</div>
+    <div class="level-info">
+      <div class="level-name" id="level-name">На старте</div>
+      <div class="level-progress-bar">
+        <div class="level-progress-fill" id="level-progress-fill"></div>
+      </div>
+      <div class="level-next" id="level-next">До II · −1.5 кг</div>
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div class="section-label">Достижения <span id="badges-count" class="section-meta"></span></div>
+  <div class="badges-grid" id="badges-grid"></div>
+
+  <!-- Heatmap -->
+  <div class="section-label">Активность за год</div>
+  <div class="heatmap-wrap">
+    <svg id="heatmap" viewBox="0 0 320 90" preserveAspectRatio="xMidYMid meet"></svg>
+    <div class="heatmap-legend">
+      <span>меньше</span>
+      <div class="legend-dots">
+        <span class="legend-dot l0"></span>
+        <span class="legend-dot l1"></span>
+        <span class="legend-dot l2"></span>
+        <span class="legend-dot l3"></span>
+        <span class="legend-dot l4"></span>
+      </div>
+      <span>больше</span>
+    </div>
+  </div>
+
+  <!-- Measurements button -->
+  <button class="measurements-btn" id="measurements-btn">Замеры тела →</button>
 
   <!-- History -->
   <div class="section-label">
@@ -860,6 +1250,69 @@ button { cursor: pointer; }
   </div>
 </div>
 
+<!-- Measurements modal -->
+<div class="library-modal" id="measurements-modal">
+  <div class="modal-header">
+    <button class="modal-back" id="measurements-close" aria-label="Назад">
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <h2 class="modal-title">Замеры тела</h2>
+  </div>
+
+  <div class="measurements-intro">
+    Замеряй раз в неделю, утром натощак. Лента-сантиметр, без втягивания живота. Замеры показывают то, что не видно по весам — мышцы растут, жир уходит.
+  </div>
+
+  <div id="measurements-chart-section" style="display:none">
+    <div class="section-label" style="margin-top:1.5rem">Динамика</div>
+    <div class="chart-wrap">
+      <svg id="measurements-chart" viewBox="0 0 320 160" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="measurements-legend" id="measurements-legend"></div>
+  </div>
+
+  <div class="section-label" style="margin-top:1.5rem">Новый замер</div>
+  <div class="measurement-form">
+    <div class="m-date-row">
+      <input type="date" class="m-date-input" id="m-date">
+    </div>
+    <div class="m-grid">
+      <div class="m-field">
+        <label class="m-label">Талия</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-waist" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Бёдра</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-hips" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Грудь</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-chest" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+      <div class="m-field">
+        <label class="m-label">Плечи</label>
+        <div class="m-input-row">
+          <input type="number" inputmode="decimal" step="0.5" class="m-input" id="m-shoulders" placeholder="—">
+          <span class="m-unit">см</span>
+        </div>
+      </div>
+    </div>
+    <button class="food-add-btn" id="m-save-btn">сохранить замер</button>
+  </div>
+
+  <div class="section-label" style="margin-top:1.5rem">История замеров</div>
+  <div class="food-list" id="measurements-list"></div>
+</div>
+
 <!-- Toast -->
 <div class="toast" id="toast">сохранено</div>
 
@@ -871,6 +1324,8 @@ const TARGETS = {
   calories: 1800,
   steps: 9000,
   startWeight: 85,
+  water: 8,
+  sleep: 7.5,
 };
 
 const DEFAULT_FOODS = [
@@ -889,14 +1344,40 @@ const DEFAULT_FOODS = [
 ];
 const CHIP_COUNT = 8;
 
+// 10 уровней по 1.5 кг = 15 кг (с 85 до 70)
+const LEVEL_STEP = 1.5;
+const LEVEL_NAMES = [
+  'На старте', 'Первый шаг', 'Подъём', 'Четверть пути',
+  'Половина пути', 'Перевал', 'На спуске', 'Финишная прямая',
+  'Близко к цели', 'У вершины'
+];
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+
+// Бейджи — каждый имеет id, имя, описание, и check(stats, data) -> boolean
+const BADGES = [
+  { id: 'b1', name: 'Первая неделя', desc: '7 дней в трекере', check: (s) => s.daysTracked >= 7 },
+  { id: 'b2', name: 'Месяц', desc: '30 дней в трекере', check: (s) => s.daysTracked >= 30 },
+  { id: 'b3', name: 'Серия 7', desc: '7 дней подряд', check: (s) => s.maxStreak >= 7 },
+  { id: 'b4', name: 'Серия 14', desc: '14 дней подряд', check: (s) => s.maxStreak >= 14 },
+  { id: 'b5', name: 'Серия 30', desc: '30 дней подряд', check: (s) => s.maxStreak >= 30 },
+  { id: 'b6', name: '−1 кг', desc: 'Первый килограмм', check: (s) => s.totalLost >= 1 },
+  { id: 'b7', name: '−5 кг', desc: 'Пять килограммов', check: (s) => s.totalLost >= 5 },
+  { id: 'b8', name: '−10 кг', desc: 'Десять килограммов', check: (s) => s.totalLost >= 10 },
+  { id: 'b9', name: '12 тренировок', desc: 'Дюжина выполненных', check: (s) => s.totalWorkouts >= 12 },
+  { id: 'b10', name: '30 тренировок', desc: 'Тридцать выполненных', check: (s) => s.totalWorkouts >= 30 },
+  { id: 'b11', name: 'Цель достигнута', desc: '70 кг', check: (s) => s.totalLost >= 15 },
+];
+
 let state = {
-  entries: {},   // { '2026-05-15': { weight, calories, steps, workout, notes } }
+  entries: {},   // { '2026-05-15': { weight, calories, steps, workout, notes, water, sleep, mood, energy } }
+  measurements: {},  // { '2026-05-17': { waist, hips, chest, shoulders } }
   currentDate: dateKey(new Date()),
   historyExpanded: false,
 };
 
 let foodLibrary = [];
 let editingFoodId = null;
+let editingMeasurementDate = null;
 
 // ============ STORAGE ============
 function load() {
@@ -905,6 +1386,7 @@ function load() {
     if (raw) {
       const parsed = JSON.parse(raw);
       state.entries = parsed.entries || {};
+      state.measurements = parsed.measurements || {};
       if (parsed.foodLibrary && Array.isArray(parsed.foodLibrary)) {
         foodLibrary = parsed.foodLibrary;
       } else {
@@ -923,8 +1405,9 @@ function save() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       entries: state.entries,
+      measurements: state.measurements,
       foodLibrary: foodLibrary,
-      version: 2,
+      version: 3,
     }));
   } catch (e) { console.error('save failed', e); }
 }
@@ -1045,6 +1528,7 @@ function renderInputs() {
   document.getElementById('input-calories').value = e.calories || '';
   document.getElementById('input-steps').value = e.steps || '';
   document.getElementById('input-notes').value = e.notes || '';
+  document.getElementById('input-sleep').value = e.sleep || '';
 
   // workout
   document.querySelectorAll('.workout-btn').forEach(b => {
@@ -1056,6 +1540,41 @@ function renderInputs() {
   const steps = parseFloat(e.steps) || 0;
   document.getElementById('prog-cal').style.width = Math.min(100, (cal / TARGETS.calories) * 100) + '%';
   document.getElementById('prog-steps').style.width = Math.min(100, (steps / TARGETS.steps) * 100) + '%';
+
+  renderWater();
+  renderScale('mood-scale', e.mood);
+  renderScale('energy-scale', e.energy);
+}
+
+function renderWater() {
+  const e = getEntry(state.currentDate);
+  const filled = parseInt(e.water) || 0;
+  const cups = document.getElementById('water-cups');
+  if (!cups) return;
+  cups.innerHTML = '';
+  for (let i = 1; i <= TARGETS.water; i++) {
+    const btn = document.createElement('button');
+    btn.className = 'water-cup' + (i <= filled ? ' filled' : '');
+    btn.dataset.cupIndex = i;
+    btn.addEventListener('click', () => {
+      const cur = parseInt(getEntry(state.currentDate).water) || 0;
+      const next = cur === i ? i - 1 : i;
+      setEntry(state.currentDate, 'water', next > 0 ? String(next) : '');
+      vibrate(10);
+      renderWater();
+      renderHistory();
+    });
+    cups.appendChild(btn);
+  }
+}
+
+function renderScale(id, currentValue) {
+  const cur = parseInt(currentValue) || 0;
+  document.querySelectorAll(`#${id} .dot`).forEach(d => {
+    const v = parseInt(d.dataset.value);
+    d.classList.toggle('active', v === cur);
+    d.classList.toggle('dim', v < cur);
+  });
 }
 
 function renderChart() {
@@ -1191,7 +1710,140 @@ function renderAll() {
   renderInputs();
   renderChart();
   renderStats();
+  renderLevel();
+  renderBadges();
+  renderHeatmap();
   renderHistory();
+}
+
+// ============ LEVELS ============
+function computeAggregateStats() {
+  const dates = Object.keys(state.entries).sort();
+  const wEntries = dates
+    .filter(d => state.entries[d].weight)
+    .map(d => ({ date: d, w: parseFloat(state.entries[d].weight) }));
+
+  const first = wEntries.length ? wEntries[0].w : null;
+  const latest = wEntries.length ? wEntries[wEntries.length - 1].w : null;
+  const totalLost = first !== null && latest !== null ? Math.max(0, first - latest) : 0;
+
+  const totalWorkouts = dates.filter(d => state.entries[d].workout && state.entries[d].workout !== 'none').length;
+
+  // Max streak
+  const dateSet = new Set(dates.filter(d => {
+    const e = state.entries[d];
+    return e.weight || e.calories || e.steps || (e.workout && e.workout !== 'none');
+  }));
+  let maxStreak = 0, cur = 0;
+  if (dateSet.size > 0) {
+    const sorted = Array.from(dateSet).sort();
+    const earliest = dateFromKey(sorted[0]);
+    const today = new Date();
+    const d = new Date(earliest);
+    while (d <= today) {
+      if (dateSet.has(dateKey(d))) {
+        cur++;
+        if (cur > maxStreak) maxStreak = cur;
+      } else {
+        cur = 0;
+      }
+      d.setDate(d.getDate() + 1);
+    }
+  }
+
+  return { totalLost, totalWorkouts, daysTracked: dateSet.size, maxStreak };
+}
+
+function renderLevel() {
+  const { totalLost } = computeAggregateStats();
+  const level = Math.min(10, Math.floor(totalLost / LEVEL_STEP) + 1);
+  const nextThreshold = level * LEVEL_STEP;
+  const prevThreshold = (level - 1) * LEVEL_STEP;
+  const progress = level >= 10 ? 1 : (totalLost - prevThreshold) / LEVEL_STEP;
+
+  document.getElementById('level-roman').textContent = ROMAN[level - 1];
+  document.getElementById('level-name').textContent = LEVEL_NAMES[level - 1];
+  document.getElementById('level-progress-fill').style.width = `${Math.max(2, Math.min(100, progress * 100))}%`;
+
+  const nextEl = document.getElementById('level-next');
+  if (level >= 10) {
+    nextEl.textContent = totalLost >= 15 ? 'Цель достигнута' : `До цели · −${(15 - totalLost).toFixed(1)} кг`;
+  } else {
+    nextEl.textContent = `До ${ROMAN[level]} · −${(nextThreshold - totalLost).toFixed(1)} кг`;
+  }
+}
+
+// ============ BADGES ============
+function renderBadges() {
+  const stats = computeAggregateStats();
+  const grid = document.getElementById('badges-grid');
+  if (!grid) return;
+  let earnedCount = 0;
+  grid.innerHTML = BADGES.map(b => {
+    const earned = b.check(stats);
+    if (earned) earnedCount++;
+    return `<div class="badge ${earned ? 'earned' : ''}">
+      <div class="badge-name">${escapeHtml(b.name)}</div>
+      <div class="badge-desc">${escapeHtml(b.desc)}</div>
+    </div>`;
+  }).join('');
+  const countEl = document.getElementById('badges-count');
+  if (countEl) countEl.textContent = `${earnedCount} из ${BADGES.length}`;
+}
+
+// ============ HEATMAP ============
+function renderHeatmap() {
+  // Год назад до сегодня, по неделям
+  const today = new Date();
+  const start = new Date(today);
+  start.setDate(start.getDate() - 364);
+  // Найти ближайший понедельник до start
+  while (start.getDay() !== 1) {
+    start.setDate(start.getDate() - 1);
+  }
+
+  const W = 320, cellSize = 5, gap = 1.5;
+  const cols = Math.ceil((today - start) / 86400000 / 7) + 1;
+  const totalW = cols * (cellSize + gap);
+  const scale = totalW > W ? W / totalW : 1;
+  const cs = cellSize * scale;
+  const g = gap * scale;
+  const H = 7 * (cs + g);
+
+  let svg = '';
+  const d = new Date(start);
+  let col = 0;
+  while (d <= today) {
+    const dow = (d.getDay() + 6) % 7; // 0=пн, 6=вс
+    const key = dateKey(d);
+    const e = state.entries[key];
+    let level = 0;
+    if (e) {
+      let score = 0;
+      if (e.weight) score++;
+      if (e.calories) score++;
+      if (e.steps) score++;
+      if (e.workout && e.workout !== 'none') score += 2; // тренировка весомее
+      level = Math.min(4, score);
+    }
+    const colors = [
+      'rgba(245, 239, 230, 0.06)',
+      'rgba(245, 239, 230, 0.18)',
+      'rgba(245, 239, 230, 0.4)',
+      'rgba(245, 239, 230, 0.7)',
+      '#D4B886',
+    ];
+    const x = col * (cs + g);
+    const y = dow * (cs + g);
+    svg += `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${cs.toFixed(1)}" height="${cs.toFixed(1)}" rx="0.5" fill="${colors[level]}" />`;
+    d.setDate(d.getDate() + 1);
+    if (d.getDay() === 1) col++;
+  }
+  const svgEl = document.getElementById('heatmap');
+  if (svgEl) {
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svgEl.innerHTML = svg;
+  }
 }
 
 // ============ EVENTS ============
@@ -1207,9 +1859,13 @@ function bindAutoSave(inputId, field, cardId, isNumber=true) {
       setEntry(state.currentDate, field, val);
       flashSaved(cardId);
       // refresh dependent UI
-      if (field === 'weight') { renderHeader(); renderChart(); renderStats(); }
+      if (field === 'weight') {
+        renderHeader(); renderChart(); renderStats();
+        renderLevel(); renderBadges();
+      }
       if (field === 'calories') renderInputs();
       if (field === 'steps') renderInputs();
+      renderHeatmap();
       renderHistory();
     }, 350);
   });
@@ -1223,6 +1879,24 @@ bindAutoSave('input-weight', 'weight', 'card-weight');
 bindAutoSave('input-calories', 'calories', 'card-calories');
 bindAutoSave('input-steps', 'steps', 'card-steps');
 bindAutoSave('input-notes', 'notes', 'card-notes', false);
+bindAutoSave('input-sleep', 'sleep', 'card-wellness');
+
+// Mood и Energy через тапы по точкам
+document.querySelectorAll('.dots-scale .dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    const scale = dot.closest('.dots-scale');
+    const field = scale.dataset.field;
+    const v = parseInt(dot.dataset.value);
+    const cur = parseInt(getEntry(state.currentDate)[field]) || 0;
+    // тап по уже активной точке снимает значение
+    const next = cur === v ? '' : String(v);
+    setEntry(state.currentDate, field, next);
+    flashSaved('card-wellness');
+    vibrate(10);
+    renderScale(scale.id, next);
+    renderHistory();
+  });
+});
 
 // stepper buttons
 document.querySelectorAll('.step-btn').forEach(btn => {
@@ -1230,13 +1904,16 @@ document.querySelectorAll('.step-btn').forEach(btn => {
     const field = btn.dataset.step;
     const delta = parseFloat(btn.dataset.delta);
     const input = document.getElementById('input-' + field);
-    const current = parseFloat(input.value) || (field === 'weight' ? 85 : 0);
+    const defaults = { weight: 85, sleep: 7.5 };
+    const current = parseFloat(input.value) || defaults[field] || 0;
     const next = Math.max(0, (current + delta));
-    input.value = field === 'weight' ? next.toFixed(1) : next.toString();
+    const decimals = (field === 'weight' || field === 'sleep') ? 1 : 0;
+    input.value = next.toFixed(decimals);
     setEntry(state.currentDate, field, input.value);
-    flashSaved('card-' + field);
+    const cardId = field === 'sleep' ? 'card-wellness' : 'card-' + field;
+    flashSaved(cardId);
     vibrate(10);
-    if (field === 'weight') { renderHeader(); renderChart(); renderStats(); }
+    if (field === 'weight') { renderHeader(); renderChart(); renderStats(); renderLevel(); renderBadges(); }
     renderInputs();
     renderHistory();
   });
@@ -1504,6 +2181,159 @@ document.getElementById('food-form-save').addEventListener('click', saveFoodForm
 document.getElementById('food-form-overlay').addEventListener('click', (e) => {
   if (e.target === document.getElementById('food-form-overlay')) closeFoodForm();
 });
+
+// ============ MEASUREMENTS ============
+const M_FIELDS = ['waist', 'hips', 'chest', 'shoulders'];
+const M_LABELS = { waist: 'Талия', hips: 'Бёдра', chest: 'Грудь', shoulders: 'Плечи' };
+const M_COLORS = {
+  waist: '#F5EFE6',
+  hips: '#D4B886',
+  chest: '#9DBE9D',
+  shoulders: '#B8B5AC',
+};
+
+function openMeasurements() {
+  // Default date — today
+  const today = dateKey(new Date());
+  editingMeasurementDate = null;
+  document.getElementById('m-date').value = today;
+  M_FIELDS.forEach(f => document.getElementById('m-' + f).value = '');
+  renderMeasurementsChart();
+  renderMeasurementsList();
+  document.getElementById('measurements-modal').classList.add('show');
+}
+
+function closeMeasurements() {
+  document.getElementById('measurements-modal').classList.remove('show');
+}
+
+function saveMeasurement() {
+  const date = document.getElementById('m-date').value;
+  if (!date) {
+    showToast('укажи дату');
+    return;
+  }
+  const entry = state.measurements[date] || {};
+  let added = 0;
+  M_FIELDS.forEach(f => {
+    const v = parseFloat(document.getElementById('m-' + f).value);
+    if (!isNaN(v) && v > 0) {
+      entry[f] = v;
+      added++;
+    }
+  });
+  if (added === 0) {
+    showToast('заполни хотя бы одно поле');
+    return;
+  }
+  state.measurements[date] = entry;
+  save();
+  M_FIELDS.forEach(f => document.getElementById('m-' + f).value = '');
+  renderMeasurementsChart();
+  renderMeasurementsList();
+  showToast('замер сохранён');
+}
+
+function deleteMeasurement(date) {
+  delete state.measurements[date];
+  save();
+  renderMeasurementsChart();
+  renderMeasurementsList();
+  showToast('удалено');
+}
+
+function renderMeasurementsChart() {
+  const dates = Object.keys(state.measurements).sort();
+  const section = document.getElementById('measurements-chart-section');
+  if (dates.length < 2) {
+    section.style.display = 'none';
+    return;
+  }
+  section.style.display = 'block';
+
+  const W = 320, H = 160, padX = 25, padY = 18;
+
+  // Сбор данных для каждого поля
+  const series = {};
+  M_FIELDS.forEach(f => {
+    series[f] = dates
+      .filter(d => state.measurements[d][f])
+      .map(d => ({ date: d, v: state.measurements[d][f] }));
+  });
+
+  // Общие границы по всем замерам
+  let allVals = [];
+  M_FIELDS.forEach(f => allVals = allVals.concat(series[f].map(p => p.v)));
+  if (allVals.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+  const min = Math.min.apply(null, allVals) - 2;
+  const max = Math.max.apply(null, allVals) + 2;
+  const range = max - min || 1;
+
+  const firstDate = dateFromKey(dates[0]);
+  const lastDate = dateFromKey(dates[dates.length - 1]);
+  const span = Math.max(1, (lastDate - firstDate) / 86400000);
+
+  const xFor = (key) => padX + ((dateFromKey(key) - firstDate) / 86400000 / span) * (W - padX * 2);
+  const yFor = (v) => H - padY - ((v - min) / range) * (H - padY * 2);
+
+  let svg = '';
+
+  M_FIELDS.forEach(f => {
+    const pts = series[f];
+    if (pts.length < 1) return;
+    const path = pts.map((p, i) => `${i === 0 ? 'M' : 'L'} ${xFor(p.date).toFixed(1)},${yFor(p.v).toFixed(1)}`).join(' ');
+    svg += `<path d="${path}" fill="none" stroke="${M_COLORS[f]}" stroke-width="1.2" />`;
+    pts.forEach(p => {
+      svg += `<circle cx="${xFor(p.date).toFixed(1)}" cy="${yFor(p.v).toFixed(1)}" r="2" fill="${M_COLORS[f]}" />`;
+    });
+  });
+
+  document.getElementById('measurements-chart').innerHTML = svg;
+
+  // Легенда
+  const legend = document.getElementById('measurements-legend');
+  legend.innerHTML = M_FIELDS.map(f => {
+    const has = series[f].length > 0;
+    return `<div class="m-legend-item" style="opacity:${has ? 1 : 0.3}">
+      <span class="m-legend-swatch" style="background:${M_COLORS[f]}"></span>
+      <span style="color:${M_COLORS[f]}">${M_LABELS[f]}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderMeasurementsList() {
+  const list = document.getElementById('measurements-list');
+  const dates = Object.keys(state.measurements).sort().reverse();
+  if (dates.length === 0) {
+    list.innerHTML = '<div style="opacity:0.5;text-align:center;padding:2rem;font-size:0.8rem">пока пусто</div>';
+    return;
+  }
+  list.innerHTML = dates.map(d => {
+    const e = state.measurements[d];
+    const parts = M_FIELDS
+      .filter(f => e[f])
+      .map(f => `${M_LABELS[f]} ${e[f]}см`);
+    return `<div class="food-item">
+      <div class="food-item-info">
+        <div class="food-item-name">${formatDate(d)}</div>
+        <div class="food-item-meta">${parts.join(' · ')}</div>
+      </div>
+      <button class="food-item-delete" data-mdate="${d}" aria-label="Удалить">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+      </button>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.food-item-delete').forEach(el => {
+    el.addEventListener('click', () => deleteMeasurement(el.dataset.mdate));
+  });
+}
+
+document.getElementById('measurements-btn').addEventListener('click', openMeasurements);
+document.getElementById('measurements-close').addEventListener('click', closeMeasurements);
+document.getElementById('m-save-btn').addEventListener('click', saveMeasurement);
 
 // ============ INIT ============
 load();
